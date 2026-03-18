@@ -705,6 +705,76 @@ body {
   transition: all 0.12s;
 }
 .emergency-close:hover { background: var(--ink); color: #fff; }
+
+/* VORZIMMER OBJECTIONS */
+.vz-objections {
+  margin-top: 6px;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+.vz-obj-item {
+  background: var(--surface);
+  border: 1px solid var(--line);
+  border-radius: 10px;
+  overflow: hidden;
+}
+.vz-obj-trigger {
+  padding: 11px 16px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  font-family: 'Syne', sans-serif;
+  font-size: 12px;
+  font-weight: 600;
+  color: var(--ink2);
+  transition: background 0.12s;
+}
+.vz-obj-trigger:hover { background: var(--tag-bg); }
+.vz-obj-trigger .vz-badge {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 10px;
+  color: var(--acc);
+  background: var(--acc-light);
+  padding: 2px 7px;
+  border-radius: 4px;
+  flex-shrink: 0;
+}
+.vz-obj-trigger .vz-chevron { margin-left: auto; color: var(--ink3); font-size: 10px; transition: transform 0.2s; }
+.vz-obj-item.open .vz-chevron { transform: rotate(180deg); }
+.vz-obj-item.open { border-color: var(--acc); }
+.vz-obj-body {
+  display: none;
+  padding: 0 16px 14px;
+  border-top: 1px solid var(--line);
+  padding-top: 12px;
+}
+.vz-obj-item.open .vz-obj-body { display: flex; flex-direction: column; gap: 7px; }
+.vz-resp {
+  background: var(--tag-bg);
+  border: 1px solid var(--line);
+  border-radius: 7px;
+  padding: 10px 13px;
+  font-size: 13px;
+  color: var(--ink2);
+  line-height: 1.6;
+  cursor: pointer;
+  transition: all 0.12s;
+}
+.vz-resp:hover { border-color: var(--acc); background: var(--acc-light); }
+.vz-resp.flash { background: var(--acc-light); border-color: var(--acc); }
+.vz-section-title {
+  font-family: 'Syne', sans-serif;
+  font-size: 10px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 1.5px;
+  color: var(--ink3);
+  margin: 16px 0 8px;
+  padding-bottom: 6px;
+  border-bottom: 1px solid var(--line);
+}
 </style>
 </head>
 <body>
@@ -796,6 +866,7 @@ body {
         <div class="chip red" onclick="jumpEinwand(12)">Zu teuer</div>
         <div class="chip red" onclick="jumpEinwand(13)">Infos schicken</div>
         <div class="chip red" onclick="jumpEinwand(14)">Wichtigere Themen</div>
+        <div class="chip red" onclick="jumpEinwand(15)">Wie messen?</div>
         <div class="chip green" onclick="gotoPhase(7)">→ Angebot</div>
         <div class="chip green" onclick="gotoPhase(8)">→ Abschluss</div>
       </div>
@@ -823,6 +894,35 @@ body {
 
 <script>
 const phases = [
+  { label: 'Vorzimmerdame', variants: [
+    { label: 'Standard-Einstieg', text: 'Guten Tag, mein Name ist Leon Seelbach von der Consileon. Ich würde gerne kurz mit Herrn/Frau [Name] sprechen – es geht um das Thema Catena-X und die aktuellen Anforderungen, die OEMs gerade an Zulieferer stellen. Ist er/sie gerade erreichbar?' },
+    { label: 'Konkret & knapp', text: 'Guten Tag, Leon Seelbach, Consileon. Ich hatte mich wegen eines fachlichen Themas im Bereich Datenstrategie und Catena-X bei Ihnen gemeldet – könnten Sie mich bitte kurz mit Herrn/Frau [Name] verbinden?' },
+    { label: 'Mit OEM-Aufhänger', text: 'Guten Tag, mein Name ist Leon Seelbach. Ich rufe an, weil sich in den letzten Wochen bei vielen Automobilzulieferern durch die OEM-Anforderungen rund um Catena-X einiges verändert hat. Ich würde das gerne kurz mit der zuständigen Person besprechen – wer wäre da bei Ihnen der richtige Ansprechpartner?' },
+    { label: 'Weiterleitung anfragen', text: 'Guten Tag, ich bin auf der Suche nach der Person, die sich bei Ihnen um das Thema Datenmanagement oder IT-Strategie kümmert – speziell im Kontext von OEM-Anforderungen. Können Sie mir sagen, an wen ich mich da am besten wenden kann?' }
+  ], objections: [
+    { trigger: '"Er/Sie ist gerade nicht erreichbar"', responses: [
+      'Kein Problem – wann wäre denn ein guter Zeitpunkt, um kurz zurückzurufen? Ich halte mich gerne an einen festen Termin.',
+      'Verstehe. Gibt es eine direkte Durchwahl oder einen Termin, den ich nutzen kann? Das Thema ist zeitlich relevant, weil OEM-Fristen laufen.'
+    ]},
+    { trigger: '"Worum geht es genau?"', responses: [
+      'Es geht um Catena-X – das Datenaustausch-System, das viele OEMs aktuell von ihren Zulieferern einfordern. Ich möchte kurz prüfen, ob das für Ihr Unternehmen relevant ist – das dauert wirklich nur 2-3 Minuten.',
+      'Ich arbeite mit Zulieferern zusammen, die aktuell Anforderungen von OEMs bekommen, Daten über Catena-X bereitzustellen. Ich wollte kurz klären, ob das Thema bei Ihnen schon angekommen ist – das ist für die zuständige Person in 2 Minuten zu beantworten.'
+    ]},
+    { trigger: '"Schicken Sie erst eine E-Mail"', responses: [
+      'Das mache ich gerne. Damit ich etwas Passendes schicken kann – wer ist denn die richtige Person dafür, und gibt es eine direkte E-Mail-Adresse?',
+      'Sehr gerne. Und darf ich fragen: Wer ist bei Ihnen zuständig für das Thema Datenmanagement oder OEM-Anforderungen? Dann kann ich die Mail direkt adressieren.'
+    ]},
+    { trigger: '"Wir haben kein Interesse"', responses: [
+      'Das kann ich gut verstehen – das Thema ist neu für viele. Darf ich kurz fragen: Hat die zuständige Person das Thema Catena-X schon auf dem Radar, oder ist das noch gar nicht angekommen?',
+      'Kein Problem. Ich frage nur kurz nach, weil viele Unternehmen das Thema erst dann wahrnehmen, wenn konkrete OEM-Fristen gesetzt werden. Vielleicht macht ein 2-Minuten-Gespräch trotzdem Sinn – wer wäre dafür zuständig?'
+    ]},
+    { trigger: '"Wir arbeiten nicht mit externen Beratern"', responses: [
+      'Das respektiere ich. Ich wollte auch gar kein Beratungsmandat ansprechen – mir geht es darum, kurz zu prüfen, ob die aktuellen OEM-Anforderungen zu Catena-X bei Ihnen schon bekannt sind. Das ist eher eine Infofrage. Wer wäre da die richtige Person?',
+    ]},
+    { trigger: '"Was ist Catena-X?"', responses: [
+      'Catena-X ist ein Datenaustausch-Ökosystem, das von großen OEMs wie BMW, VW und Mercedes eingeführt wird. Zulieferer werden zunehmend verpflichtet, darüber Produktdaten bereitzustellen. Das ist der Hintergrund meines Anrufs – und genau das würde ich gerne kurz mit der zuständigen Person besprechen.'
+    ]}
+  ]},
   { label: 'Begrüßung & Einstieg', variants: [
     { label: 'Grußformel', text: 'Schönen guten Tag [Name], hier ist Leon Seelbach von der Firma Consileon.' },
     { label: 'Standard-Einstieg', text: 'Viele Zulieferer bekommen aktuell Druck von OEMs, Daten über Catena-X bereitzustellen – oft ohne klare interne Strukturen.\n\nWie stark beschäftigt Sie das Thema aktuell schon im Alltag?' },
@@ -983,6 +1083,16 @@ const objections = [
     { label: 'Priorisierung hinterfragen', phase: 3, text: 'Was sind aktuell die Top-3-Themen bei Ihnen? Ich frage, weil Catena-X bei vielen Zulieferern direkt mit anderen laufenden Projekten zusammenhängt.' },
     { label: 'Dringlichkeit aufzeigen', phase: 4, text: 'Ich verstehe das. Gleichzeitig: OEM-Fristen warten nicht auf freie Kapazitäten. Darf ich in 60 Sekunden zeigen, warum der Zeitpunkt trotzdem wichtig ist?' },
     { label: 'Folgetermin sichern', phase: 8, text: 'Dann lass uns einen Termin in 4 Wochen vereinbaren – so haben Sie Zeit zu priorisieren und wir haben ein konkretes Datum.' }
+  ]},
+  { title: '"Wie wollen Sie das Ergebnis belastbar messen?"', responses: [
+    { label: 'Konkrete Erfolgskriterien nennen', text: 'Gute Frage – und genau das definieren wir zu Beginn gemeinsam mit Ihnen. Typische Messgrößen sind: Wie viele OEM-Anforderungen können Sie zum Stichtag X erfüllen? Wie lange dauert eine Datenlieferung heute versus nach unserem Engagement? Wie viele manuelle Schritte sind noch notwendig? Das sind harte, überprüfbare Zahlen.' },
+    { label: 'Mehrstufige Qualitätssicherung', text: 'Wir arbeiten mit klaren Erfolgsparametern, die wir vorab festlegen: OEM-Konformität der Datenmodelle, Reaktionszeit bei neuen Anforderungen, und der Grad der internen Selbstständigkeit Ihres Teams. Alle Ergebnisse spiegeln wir gegen externe Standards und OEM-Vorgaben – da gibt es keinen Interpretationsspielraum.' },
+    { label: 'Transparenz durch Dokumentation', text: 'Jedes Ergebnis, das wir liefern, ist vollständig dokumentiert und für Sie intern nachvollziehbar. Sie können jederzeit prüfen, ob die Datenprozesse OEM-konform sind – unabhängig von uns. Das ist uns wichtig, damit Sie keine Blackbox kaufen, sondern etwas, das Sie selbst verstehen und kontrollieren können.' },
+    { label: 'Pilotphase vorschlagen', text: 'Ich verstehe die Skepsis – und genau deshalb empfehle ich immer, klein anzufangen. Starten wir mit einem klar abgegrenzten Bereich, definieren vorab die Erfolgskriterien, und nach 4 Wochen können Sie selbst bewerten, ob die Ergebnisse belastbar sind. Dann entscheiden Sie, ob es weitergeht.' }
+  ], followups: [
+    { label: 'Erwartungen klären', phase: 3, text: 'Was wäre für Sie konkret ein belastbares Ergebnis – gibt es einen OEM-Stichtag oder eine interne Kennzahl, an der Sie den Erfolg festmachen würden?' },
+    { label: 'Ergebnis-Phase zeigen', phase: 5, text: 'Darf ich kurz zeigen, welche konkreten Lieferergebnisse wir typischerweise nach wenigen Wochen erreichen – mit Beispielen aus vergleichbaren Projekten?' },
+    { label: 'Angebot mit Pilotstruktur', phase: 7, text: 'Ich schlage vor: Wir starten mit einem klar abgegrenzten Readiness-Check mit vorab definierten Erfolgskriterien. So können Sie das Ergebnis direkt bewerten, bevor Sie größere Entscheidungen treffen.' }
   ]}
 ];
 
@@ -1083,13 +1193,29 @@ function renderPhaseView() {
   renderAllSteppers();
   const body = document.getElementById('phaseBody');
   const name = '[Name]';
-  body.innerHTML = phase.variants.map((v, vi) => {
+  let html = phase.variants.map((v, vi) => {
     const txt = v.text.replace(/\[Name\]/g, name).replace(/\[Name des Kunden\]/g, name);
     return `<div class="variant-card" id="vc-${currentPhaseIdx}-${vi}" onclick="pickVariant(${currentPhaseIdx},${vi},this)">
       <div class="variant-label">${v.label}<span class="copy-badge">Klicken zum Kopieren →</span></div>
       <div class="variant-text">${esc(txt)}</div>
     </div>`;
   }).join('');
+  if (phase.objections) {
+    html += `<div class="vz-section-title">⚡ Typische Einwände der Vorzimmerdame</div><div class="vz-objections">`;
+    html += phase.objections.map((o, oi) => `
+      <div class="vz-obj-item" id="vzo-${oi}">
+        <div class="vz-obj-trigger" onclick="toggleVzObj(${oi})">
+          <span class="vz-badge">Einwand</span>
+          <span>${esc(o.trigger)}</span>
+          <span class="vz-chevron">▼</span>
+        </div>
+        <div class="vz-obj-body">
+          ${o.responses.map((r, ri) => `<div class="vz-resp" onclick="copyVzResp(this, '${escJs(r)}')">${esc(r)}</div>`).join('')}
+        </div>
+      </div>`).join('');
+    html += `</div>`;
+  }
+  body.innerHTML = html;
   document.getElementById('btnBack').disabled = currentPhaseIdx === 0;
   document.getElementById('btnNext').disabled = currentPhaseIdx === phases.length-1;
   document.getElementById('btnNext').textContent = currentPhaseIdx === phases.length-2 ? '→ Abschluss' : 'Weiter →';
@@ -1170,6 +1296,17 @@ function copyQ(ci, qi, el) {
 function jumpFragen(catIdx) { switchView('fragen'); renderFragen(catIdx); }
 
 // UTILS
+function toggleVzObj(idx) {
+  document.getElementById('vzo-'+idx).classList.toggle('open');
+}
+function copyVzResp(el, txt) {
+  copyText(txt);
+  el.classList.add('flash');
+  setTimeout(() => el.classList.remove('flash'), 1000);
+}
+function escJs(s) {
+  return s.replace(/\\/g,'\\\\').replace(/'/g,"\\'").replace(/\n/g,'\\n');
+}
 function esc(s) {
   return s.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/\n/g,'<br>');
 }
