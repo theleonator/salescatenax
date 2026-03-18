@@ -183,7 +183,6 @@ body {
 }
 .phase-step:hover { background: var(--tag-bg); color: var(--ink); }
 .phase-step.active { background: var(--ink); color: #fff; }
-.phase-step.done { color: var(--acc2); background: var(--green-light); }
 .phase-step .pnum {
   width: 15px; height: 15px;
   border-radius: 50%;
@@ -192,7 +191,6 @@ body {
   font-size: 9px; flex-shrink: 0;
 }
 .phase-step.active .pnum { background: rgba(255,255,255,0.2); }
-.phase-step.done .pnum { background: var(--acc2); color: #fff; }
 .phase-arrow { color: var(--line); font-size: 13px; flex-shrink: 0; }
 
 /* VARIANT CARDS */
@@ -1046,7 +1044,6 @@ const questionCategories = [
 // STATE
 let currentView = 'sales';
 let currentPhaseIdx = 0;
-const doneSet = new Set();
 let activeObjIdx = -1;
 let activeFragenCat = 0;
 
@@ -1056,8 +1053,8 @@ let activeFragenCat = 0;
 // VIEWS
 function buildStepperHTML() {
   return phases.map((p, i) => {
-    const cls = i===currentPhaseIdx ? 'active' : doneSet.has(i) ? 'done' : '';
-    const num = doneSet.has(i) ? '✓' : i+1;
+    const cls = i===currentPhaseIdx ? 'active' : '';
+    const num = i+1;
     const arrow = i < phases.length-1 ? '<div class="phase-arrow">›</div>' : '';
     return `<div class="phase-step ${cls}" onclick="gotoPhase(${i})"><div class="pnum">${num}</div>${p.label}</div>${arrow}`;
   }).join('');
@@ -1105,7 +1102,6 @@ function pickVariant(phaseIdx, varIdx, el) {
   copyText(txt);
 }
 function gotoPhase(idx) {
-  if (currentPhaseIdx !== idx) doneSet.add(currentPhaseIdx);
   currentPhaseIdx = idx;
   switchView('sales');
   renderPhaseView();
