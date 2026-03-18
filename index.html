@@ -1,1 +1,1257 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Catena-X · Kaltakquise</title>
+<link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=JetBrains+Mono:wght@400;500&family=Literata:ital,wght@0,300;0,400;1,300&display=swap" rel="stylesheet">
+<style>
+:root {
+  --bg: #f5f2ed;
+  --surface: #ffffff;
+  --ink: #1a1714;
+  --ink2: #4a4642;
+  --ink3: #8a8480;
+  --line: #e0dbd4;
+  --acc: #c8400a;
+  --acc2: #b85c00;
+  --acc3: #c84a00;
+  --acc-light: #fdf0eb;
+  --green-light: #fff0e6;
+  --blue-light: #fde8d8;
+  --yellow: #d97706;
+  --tag-bg: #f0ece6;
+  --shadow: 0 1px 3px rgba(0,0,0,0.08), 0 4px 12px rgba(0,0,0,0.04);
+  --shadow-hover: 0 2px 8px rgba(0,0,0,0.12), 0 8px 24px rgba(0,0,0,0.08);
+}
+* { margin: 0; padding: 0; box-sizing: border-box; }
+html, body { height: 100%; overflow: hidden; }
+body {
+  background: var(--bg);
+  color: var(--ink);
+  font-family: 'Literata', Georgia, serif;
+  font-size: 14px;
+  line-height: 1.6;
+}
 
+/* TOP BAR */
+.topbar {
+  background: var(--ink);
+  height: 52px;
+  display: flex;
+  align-items: center;
+  padding: 0 16px;
+  gap: 8px;
+  position: fixed;
+  top: 0; left: 0; right: 0;
+  z-index: 100;
+}
+.topbar-logo {
+  font-family: 'Syne', sans-serif;
+  font-size: 13px;
+  font-weight: 800;
+  color: #fff;
+  letter-spacing: 0.5px;
+  white-space: nowrap;
+  padding-right: 14px;
+  border-right: 1px solid rgba(255,255,255,0.12);
+  flex-shrink: 0;
+}
+.topbar-logo span { color: #e07040; }
+.main-tabs {
+  display: flex;
+  gap: 2px;
+  flex: 1;
+}
+.main-tab {
+  padding: 6px 14px;
+  border-radius: 6px;
+  cursor: pointer;
+  font-family: 'Syne', sans-serif;
+  font-size: 12px;
+  font-weight: 600;
+  color: rgba(255,255,255,0.4);
+  transition: all 0.15s;
+  white-space: nowrap;
+  border: 1px solid transparent;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+.main-tab:hover { color: rgba(255,255,255,0.8); background: rgba(255,255,255,0.06); }
+.main-tab.active { color: #fff; background: rgba(255,255,255,0.13); border-color: rgba(255,255,255,0.15); }
+.main-tab.t-red { color: rgba(224,112,64,0.7); }
+.main-tab.t-red.active { color: #ff9060; background: rgba(200,64,10,0.22); border-color: rgba(200,64,10,0.35); }
+.header-notes {
+  flex: 1;
+  margin-left: 16px;
+  background: rgba(255,255,255,0.07);
+  border: 1.5px solid var(--acc);
+  border-radius: 7px;
+  padding: 7px 12px;
+  color: #fff;
+  font-family: 'Literata', Georgia, serif;
+  font-size: 13px;
+  line-height: 1.5;
+  resize: none;
+  outline: none;
+  height: 36px;
+  transition: border-color 0.15s, background 0.15s;
+  overflow: hidden;
+}
+.header-notes:focus {
+  border-color: var(--acc);
+  background: rgba(255,255,255,0.1);
+}
+.header-notes::placeholder { color: rgba(255,255,255,0.3); font-style: italic; }
+
+/* LAYOUT */
+.layout {
+  display: grid;
+  grid-template-columns: 1fr 268px;
+  height: calc(100vh - 52px);
+  margin-top: 52px;
+}
+.content-area {
+  overflow-y: auto;
+  padding: 20px 24px 24px;
+}
+.right-panel {
+  background: var(--surface);
+  border-left: 1px solid var(--line);
+  overflow-y: auto;
+  padding: 14px;
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+}
+
+/* VIEWS */
+.view { display: none; }
+.view.active { display: block; }
+
+/* SECTION HEADER */
+.section-head {
+  display: flex;
+  align-items: baseline;
+  gap: 12px;
+  margin-bottom: 14px;
+}
+.section-title {
+  font-family: 'Syne', sans-serif;
+  font-size: 20px;
+  font-weight: 800;
+  color: var(--ink);
+}
+.section-sub {
+  font-size: 11px;
+  font-family: 'JetBrains Mono', monospace;
+  color: var(--ink3);
+  background: var(--tag-bg);
+  padding: 2px 8px;
+  border-radius: 20px;
+}
+
+/* PHASE STEPPER */
+.phase-stepper {
+  display: flex;
+  align-items: center;
+  gap: 3px;
+  margin-bottom: 18px;
+  background: var(--surface);
+  border: 1px solid var(--line);
+  border-radius: 10px;
+  padding: 7px 10px;
+  overflow-x: auto;
+  flex-wrap: nowrap;
+}
+.phase-step {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  padding: 5px 10px;
+  border-radius: 6px;
+  cursor: pointer;
+  font-family: 'Syne', sans-serif;
+  font-size: 11px;
+  font-weight: 600;
+  color: var(--ink3);
+  transition: all 0.12s;
+  white-space: nowrap;
+  border: 1px solid transparent;
+  flex-shrink: 0;
+}
+.phase-step:hover { background: var(--tag-bg); color: var(--ink); }
+.phase-step.active { background: var(--ink); color: #fff; }
+.phase-step.done { color: var(--acc2); background: var(--green-light); }
+.phase-step .pnum {
+  width: 15px; height: 15px;
+  border-radius: 50%;
+  background: rgba(0,0,0,0.08);
+  display: flex; align-items: center; justify-content: center;
+  font-size: 9px; flex-shrink: 0;
+}
+.phase-step.active .pnum { background: rgba(255,255,255,0.2); }
+.phase-step.done .pnum { background: var(--acc2); color: #fff; }
+.phase-arrow { color: var(--line); font-size: 13px; flex-shrink: 0; }
+
+/* VARIANT CARDS */
+.phase-body { display: flex; flex-direction: column; gap: 10px; }
+.variant-card {
+  background: var(--surface);
+  border: 1px solid var(--line);
+  border-radius: 10px;
+  padding: 15px 18px 15px 22px;
+  cursor: pointer;
+  transition: all 0.15s;
+  position: relative;
+}
+.variant-card::before {
+  content: '';
+  position: absolute;
+  left: 0; top: 8px; bottom: 8px;
+  width: 3px; border-radius: 2px;
+  background: var(--line);
+  transition: background 0.15s;
+}
+.variant-card:hover { box-shadow: var(--shadow-hover); border-color: #c8b8a8; transform: translateX(2px); }
+.variant-card:hover::before { background: var(--acc3); }
+.variant-card.picked { border-color: var(--acc3); background: var(--blue-light); }
+.variant-card.picked::before { background: var(--acc3); }
+.variant-label {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 10px;
+  color: var(--ink3);
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  margin-bottom: 7px;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+.copy-badge {
+  margin-left: auto;
+  font-size: 9px;
+  color: var(--acc3);
+  opacity: 0;
+  transition: opacity 0.12s;
+}
+.variant-card:hover .copy-badge { opacity: 1; }
+.variant-card.picked .copy-badge { opacity: 1; color: var(--acc2); content: 'Kopiert ✓'; }
+.variant-text {
+  color: var(--ink2);
+  line-height: 1.65;
+  font-size: 13.5px;
+  white-space: pre-wrap;
+}
+.phase-nav { display: flex; gap: 8px; margin-top: 14px; }
+.btn {
+  padding: 9px 18px;
+  border-radius: 7px;
+  border: 1px solid var(--line);
+  background: var(--surface);
+  color: var(--ink);
+  cursor: pointer;
+  font-family: 'Syne', sans-serif;
+  font-size: 12px;
+  font-weight: 600;
+  transition: all 0.12s;
+}
+.btn:hover { background: var(--tag-bg); }
+.btn.primary { background: var(--ink); color: #fff; border-color: var(--ink); }
+.btn.primary:hover { background: #2d2a27; }
+.btn:disabled { opacity: 0.3; cursor: default; pointer-events: none; }
+
+/* EINWÄNDE */
+.einwaende-grid {
+  display: grid;
+  grid-template-columns: 210px 1fr;
+  gap: 14px;
+  height: calc(100vh - 52px - 78px);
+}
+.einwand-list {
+  background: var(--surface);
+  border: 1px solid var(--line);
+  border-radius: 10px;
+  overflow-y: auto;
+  padding: 8px;
+}
+.einwand-btn {
+  width: 100%;
+  text-align: left;
+  padding: 9px 11px;
+  border-radius: 7px;
+  border: 1px solid transparent;
+  background: none;
+  cursor: pointer;
+  font-family: 'Syne', sans-serif;
+  font-size: 11px;
+  font-weight: 600;
+  color: var(--ink2);
+  transition: all 0.12s;
+  margin-bottom: 2px;
+  line-height: 1.35;
+}
+.einwand-btn:hover { background: var(--tag-bg); color: var(--ink); }
+.einwand-btn.active { background: var(--ink); color: #fff; }
+.einwand-responses {
+  overflow-y: auto;
+  display: flex;
+  flex-direction: column;
+  gap: 9px;
+}
+.response-card {
+  background: var(--surface);
+  border: 1px solid var(--line);
+  border-radius: 10px;
+  padding: 14px 18px;
+  cursor: pointer;
+  transition: all 0.15s;
+}
+.response-card:hover { box-shadow: var(--shadow-hover); border-color: var(--acc); transform: translateX(2px); }
+.response-card.flash { background: var(--acc-light); border-color: var(--acc); }
+.resp-label {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 10px;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  color: var(--acc);
+  margin-bottom: 7px;
+}
+.resp-text {
+  color: var(--ink2);
+  line-height: 1.65;
+  font-size: 13.5px;
+  white-space: pre-wrap;
+}
+.einwand-empty {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  height: 100%;
+  color: var(--ink3);
+  font-family: 'Syne', sans-serif;
+  font-size: 13px;
+  gap: 8px;
+  text-align: center;
+}
+.einwand-empty .arrow { font-size: 28px; opacity: 0.3; }
+
+/* FRAGEN */
+.fragen-layout {
+  display: grid;
+  grid-template-columns: 195px 1fr;
+  gap: 14px;
+  height: calc(100vh - 52px - 78px);
+}
+.fragen-cats {
+  background: var(--surface);
+  border: 1px solid var(--line);
+  border-radius: 10px;
+  padding: 8px;
+  overflow-y: auto;
+}
+.fragen-cat-btn {
+  width: 100%;
+  text-align: left;
+  padding: 9px 11px;
+  border-radius: 7px;
+  border: 1px solid transparent;
+  background: none;
+  cursor: pointer;
+  font-family: 'Syne', sans-serif;
+  font-size: 11px;
+  font-weight: 600;
+  color: var(--ink2);
+  transition: all 0.12s;
+  margin-bottom: 2px;
+  line-height: 1.35;
+}
+.fragen-cat-btn:hover { background: var(--tag-bg); }
+.fragen-cat-btn.active { background: var(--acc3); color: #fff; }
+.fragen-content { overflow-y: auto; }
+.fragen-group-title {
+  font-family: 'Syne', sans-serif;
+  font-size: 14px;
+  font-weight: 700;
+  color: var(--ink);
+  margin-bottom: 12px;
+  padding-bottom: 8px;
+  border-bottom: 2px solid var(--ink);
+}
+.q-cards { display: flex; flex-direction: column; gap: 5px; }
+.q-card {
+  background: var(--surface);
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  padding: 10px 14px 10px 38px;
+  cursor: pointer;
+  font-size: 13.5px;
+  color: var(--ink2);
+  transition: all 0.12s;
+  position: relative;
+  line-height: 1.5;
+}
+.q-card::before {
+  content: '?';
+  position: absolute;
+  left: 12px; top: 10px;
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 10px;
+  font-weight: 500;
+  color: var(--acc3);
+  background: var(--blue-light);
+  border-radius: 4px;
+  padding: 2px 5px;
+}
+.q-card:hover { box-shadow: var(--shadow); border-color: var(--acc3); background: var(--blue-light); transform: translateX(2px); }
+.q-card.flash { background: var(--green-light); border-color: var(--acc2); }
+.q-card.flash::before { background: var(--acc2); color: #fff; content: '✓'; }
+
+/* RIGHT PANEL */
+.panel-block-title {
+  font-family: 'Syne', sans-serif;
+  font-size: 10px;
+  font-weight: 700;
+  color: var(--ink3);
+  text-transform: uppercase;
+  letter-spacing: 1.5px;
+  margin-bottom: 8px;
+  padding-bottom: 6px;
+  border-bottom: 1px solid var(--line);
+}
+.contact-field { margin-bottom: 7px; }
+.field-lbl {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 10px;
+  color: var(--ink3);
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  margin-bottom: 3px;
+}
+.field-inp {
+  width: 100%;
+  background: var(--bg);
+  border: 1px solid var(--line);
+  border-radius: 6px;
+  padding: 6px 9px;
+  font-family: 'Literata', serif;
+  font-size: 13px;
+  color: var(--ink);
+  outline: none;
+  transition: border-color 0.12s;
+}
+.field-inp:focus { border-color: var(--acc3); background: #fff; }
+.field-inp::placeholder { color: var(--ink3); }
+.chips { display: flex; flex-wrap: wrap; gap: 4px; }
+.chip {
+  padding: 4px 9px;
+  border-radius: 20px;
+  border: 1px solid var(--line);
+  background: var(--tag-bg);
+  color: var(--ink2);
+  font-family: 'Syne', sans-serif;
+  font-size: 11px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.12s;
+  white-space: nowrap;
+}
+.chip:hover { background: var(--ink); color: #fff; border-color: var(--ink); }
+.chip.red { border-color: #1a1714; color: var(--acc); background: #1a1714; }
+.chip.red:hover { background: #000; border-color: #000; color: var(--acc); }
+.chip.green { border-color: #555; color: var(--acc); background: #555; }
+.chip.green:hover { background: #333; border-color: #333; color: var(--acc); }
+.chip.blue { border-color: #d0cac3; color: var(--acc); background: #f0ece6; }
+.chip.blue:hover { background: #e0dbd4; border-color: #bbb; color: var(--acc); }
+.progress-mini { display: flex; flex-direction: column; gap: 2px; }
+.prog-row {
+  display: flex;
+  align-items: center;
+  gap: 7px;
+  padding: 5px 7px;
+  border-radius: 5px;
+  cursor: pointer;
+  font-family: 'Syne', sans-serif;
+  font-size: 11px;
+  font-weight: 600;
+  color: var(--ink3);
+  transition: background 0.1s;
+}
+.prog-row:hover { background: var(--tag-bg); color: var(--ink); }
+.prog-row.curr { color: var(--acc3); background: var(--blue-light); }
+.prog-row.done-p { color: var(--acc2); }
+.prog-dot {
+  width: 6px; height: 6px;
+  border-radius: 50%;
+  background: var(--line);
+  flex-shrink: 0;
+}
+.prog-row.curr .prog-dot { background: var(--acc3); box-shadow: 0 0 0 2px rgba(26,61,107,0.2); }
+.prog-row.done-p .prog-dot { background: var(--acc2); }
+.notes {
+  width: 100%;
+  background: var(--bg);
+  border: 1px solid var(--line);
+  border-radius: 6px;
+  padding: 9px;
+  font-family: 'Literata', serif;
+  font-size: 12px;
+  color: var(--ink);
+  resize: vertical;
+  min-height: 85px;
+  outline: none;
+  line-height: 1.6;
+}
+.notes:focus { border-color: var(--acc3); background: #fff; }
+.notes::placeholder { color: var(--ink3); font-style: italic; }
+
+/* TOAST */
+.toast {
+  position: fixed;
+  bottom: 18px;
+  left: 50%;
+  transform: translateX(-50%) translateY(10px);
+  background: var(--ink);
+  color: #fff;
+  padding: 8px 18px;
+  border-radius: 8px;
+  font-family: 'Syne', sans-serif;
+  font-size: 12px;
+  font-weight: 600;
+  opacity: 0;
+  transition: all 0.2s;
+  pointer-events: none;
+  z-index: 999;
+  white-space: nowrap;
+}
+.toast.show { opacity: 1; transform: translateX(-50%) translateY(0); }
+
+::-webkit-scrollbar { width: 4px; height: 4px; }
+::-webkit-scrollbar-track { background: transparent; }
+::-webkit-scrollbar-thumb { background: var(--line); border-radius: 4px; }
+
+/* FOLLOWUP QUESTIONS */
+.followup-section {
+  margin-top: 12px;
+  background: var(--tag-bg);
+  border: 1px solid var(--line);
+  border-radius: 10px;
+  padding: 14px 16px;
+}
+.followup-title {
+  font-family: 'Syne', sans-serif;
+  font-size: 10px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 1.5px;
+  color: var(--ink3);
+  margin-bottom: 10px;
+}
+.followup-card {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 9px 12px;
+  border-radius: 7px;
+  border: 1px solid var(--line);
+  background: var(--surface);
+  cursor: pointer;
+  margin-bottom: 6px;
+  transition: all 0.12s;
+}
+.followup-card:hover { border-color: var(--acc); box-shadow: var(--shadow); transform: translateX(2px); }
+.followup-card:last-child { margin-bottom: 0; }
+.followup-phase {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 10px;
+  font-weight: 500;
+  color: var(--acc);
+  background: var(--acc-light);
+  border: 1px solid rgba(200,64,10,0.2);
+  border-radius: 5px;
+  padding: 2px 7px;
+  white-space: nowrap;
+  flex-shrink: 0;
+}
+.followup-text {
+  font-size: 12px;
+  color: var(--ink2);
+  line-height: 1.45;
+  flex: 1;
+}
+.followup-arrow {
+  color: var(--acc);
+  font-size: 14px;
+  flex-shrink: 0;
+  opacity: 0;
+  transition: opacity 0.12s;
+}
+.followup-card:hover .followup-arrow { opacity: 1; }
+
+/* EMERGENCY BUTTON & MODAL */
+.emergency-btn {
+  flex-shrink: 0;
+  margin-left: 12px;
+  padding: 6px 14px;
+  border-radius: 7px;
+  border: 1.5px solid #ff4422;
+  background: rgba(255,60,30,0.15);
+  color: #ff7755;
+  font-family: 'Syne', sans-serif;
+  font-size: 12px;
+  font-weight: 700;
+  cursor: pointer;
+  letter-spacing: 0.5px;
+  transition: all 0.15s;
+  animation: pulse-red 2s infinite;
+}
+.emergency-btn:hover {
+  background: #ff4422;
+  color: #fff;
+  animation: none;
+}
+@keyframes pulse-red {
+  0%, 100% { box-shadow: 0 0 0 0 rgba(255,60,30,0.4); }
+  50% { box-shadow: 0 0 0 5px rgba(255,60,30,0); }
+}
+
+.emergency-overlay {
+  display: none;
+  position: fixed;
+  inset: 0;
+  background: rgba(0,0,0,0.6);
+  z-index: 500;
+  align-items: center;
+  justify-content: center;
+  backdrop-filter: blur(3px);
+}
+.emergency-overlay.open { display: flex; }
+
+.emergency-modal {
+  background: var(--surface);
+  border-radius: 16px;
+  padding: 28px 32px;
+  max-width: 580px;
+  width: 90%;
+  box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+  border: 1px solid var(--line);
+  position: relative;
+}
+.emergency-modal-title {
+  font-family: 'Syne', sans-serif;
+  font-size: 18px;
+  font-weight: 800;
+  color: var(--ink);
+  margin-bottom: 6px;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+.emergency-modal-title .badge {
+  font-size: 10px;
+  background: #ff4422;
+  color: #fff;
+  padding: 2px 8px;
+  border-radius: 20px;
+  letter-spacing: 1px;
+  text-transform: uppercase;
+}
+.emergency-modal-sub {
+  font-size: 13px;
+  color: var(--ink3);
+  margin-bottom: 22px;
+}
+.emergency-option {
+  border: 1.5px solid var(--line);
+  border-radius: 12px;
+  padding: 18px 20px;
+  margin-bottom: 12px;
+  cursor: pointer;
+  transition: all 0.15s;
+  position: relative;
+}
+.emergency-option:hover { border-color: var(--acc); box-shadow: var(--shadow-hover); transform: translateY(-1px); }
+.emergency-option:last-child { margin-bottom: 0; }
+.emergency-option-label {
+  font-family: 'Syne', sans-serif;
+  font-size: 11px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  color: var(--acc);
+  margin-bottom: 8px;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+.emergency-option-text {
+  font-size: 13.5px;
+  color: var(--ink2);
+  line-height: 1.65;
+  white-space: pre-wrap;
+}
+.emergency-option.flash { background: var(--acc-light); border-color: var(--acc); }
+.emergency-close {
+  position: absolute;
+  top: 16px; right: 16px;
+  width: 28px; height: 28px;
+  border-radius: 50%;
+  border: 1px solid var(--line);
+  background: var(--tag-bg);
+  color: var(--ink3);
+  font-size: 14px;
+  cursor: pointer;
+  display: flex; align-items: center; justify-content: center;
+  transition: all 0.12s;
+}
+.emergency-close:hover { background: var(--ink); color: #fff; }
+</style>
+</head>
+<body>
+
+<div class="topbar">
+  <div class="topbar-logo">Catena-X<span> Sales Leitfaden</span></div>
+  <div class="main-tabs">
+    <div class="main-tab active" data-view="sales" onclick="switchView('sales')">
+      📋 Sales-Struktur
+    </div>
+    <div class="main-tab t-red" data-view="einwaende" onclick="switchView('einwaende')">
+      ⚡ Einwände
+    </div>
+    <div class="main-tab" data-view="fragen" onclick="switchView('fragen')">
+      💬 Fragen
+    </div>
+  </div>
+  <textarea class="header-notes" id="callNotes" placeholder="Notizen…"></textarea>
+  <button class="emergency-btn" onclick="openEmergency()">🚨 Notfall</button>
+</div>
+
+<div class="layout">
+  <div class="content-area">
+
+    <!-- SALES VIEW -->
+    <div class="view active" id="view-sales">
+      <div class="section-head">
+        <div class="section-title" id="salesPhaseTitle">Begrüßung</div>
+        <div class="section-sub" id="salesPhaseTag">Phase 1 / 9</div>
+      </div>
+      <div class="phase-stepper" id="phaseStepper"></div>
+      <div class="phase-body" id="phaseBody"></div>
+      <div class="phase-nav">
+        <button class="btn" id="btnBack" onclick="prevPhase()">← Zurück</button>
+        <button class="btn primary" id="btnNext" onclick="nextPhase()">Weiter →</button>
+      </div>
+    </div>
+
+    <!-- EINWÄNDE VIEW -->
+    <div class="view" id="view-einwaende">
+      <div class="phase-stepper" id="phaseStepperE"></div>
+      <div class="section-head">
+        <div class="section-title">Einwandbehandlung</div>
+        <div class="section-sub">Antwort anklicken = kopieren</div>
+      </div>
+      <div class="einwaende-grid">
+        <div class="einwand-list" id="einwandList"></div>
+        <div class="einwand-responses" id="einwandResponses">
+          <div class="einwand-empty">
+            <div class="arrow">←</div>
+            Einwand auswählen
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- FRAGEN VIEW -->
+    <div class="view" id="view-fragen">
+      <div class="phase-stepper" id="phaseStepperF"></div>
+      <div class="section-head">
+        <div class="section-title">Fragenkatalog</div>
+        <div class="section-sub">Frage anklicken = kopieren</div>
+      </div>
+      <div class="fragen-layout">
+        <div class="fragen-cats" id="fragenCats"></div>
+        <div class="fragen-content" id="fragenContent"></div>
+      </div>
+    </div>
+
+  </div>
+
+  <!-- RIGHT PANEL -->
+  <div class="right-panel">
+    <div>
+      <div class="panel-block-title">⚡ Einwände</div>
+      <div class="chips">
+        <div class="chip red" onclick="jumpEinwand(0)">Kein Interesse</div>
+        <div class="chip red" onclick="jumpEinwand(1)">Keine Zeit</div>
+        <div class="chip red" onclick="jumpEinwand(2)">Haben Partner</div>
+        <div class="chip red" onclick="jumpEinwand(3)">Kein Bedarf</div>
+        <div class="chip red" onclick="jumpEinwand(4)">Warten ab</div>
+        <div class="chip red" onclick="jumpEinwand(5)">Interne IT</div>
+        <div class="chip red" onclick="jumpEinwand(6)">Keine Kapazitäten</div>
+        <div class="chip red" onclick="jumpEinwand(7)">Welche Daten?</div>
+        <div class="chip red" onclick="jumpEinwand(8)">Zu großes Projekt</div>
+        <div class="chip red" onclick="jumpEinwand(9)">Intern abstimmen</div>
+        <div class="chip red" onclick="jumpEinwand(10)">Haben Lösung</div>
+        <div class="chip red" onclick="jumpEinwand(11)">Keine Abhängigkeit</div>
+        <div class="chip red" onclick="jumpEinwand(12)">Zu teuer</div>
+        <div class="chip red" onclick="jumpEinwand(13)">Infos schicken</div>
+        <div class="chip red" onclick="jumpEinwand(14)">Wichtigere Themen</div>
+        <div class="chip green" onclick="gotoPhase(7)">→ Angebot</div>
+        <div class="chip green" onclick="gotoPhase(8)">→ Abschluss</div>
+      </div>
+    </div>
+
+    <div>
+      <div class="panel-block-title">💬 Fragen-Kategorien</div>
+      <div class="chips">
+        <div class="chip blue" onclick="jumpFragen(0)">Einstieg & Situation</div>
+        <div class="chip blue" onclick="jumpFragen(1)">OEM-Anforderungen</div>
+        <div class="chip blue" onclick="jumpFragen(2)">Datenlandschaft</div>
+        <div class="chip blue" onclick="jumpFragen(3)">Interne Strukturen</div>
+        <div class="chip blue" onclick="jumpFragen(4)">Herausforderungen</div>
+        <div class="chip blue" onclick="jumpFragen(5)">Risiko-Fragen</div>
+        <div class="chip blue" onclick="jumpFragen(6)">Zielbild</div>
+        <div class="chip blue" onclick="jumpFragen(7)">Entscheidung &amp; Abschluss</div>
+      </div>
+    </div>
+
+
+  </div>
+</div>
+
+<div class="toast" id="toast">📋 In Zwischenablage kopiert</div>
+
+<script>
+const phases = [
+  { label: 'Begrüßung & Einstieg', variants: [
+    { label: 'Grußformel', text: 'Schönen guten Tag [Name], hier ist Leon Seelbach von der Firma Consileon.' },
+    { label: 'Standard-Einstieg', text: 'Viele Zulieferer bekommen aktuell Druck von OEMs, Daten über Catena-X bereitzustellen – oft ohne dass intern klare Strukturen dafür existieren.\n\nWie stark beschäftigt Sie das Thema Catena-X aktuell schon im Alltag?' },
+    { label: 'Einstieg mit Schreiben-Aufhänger', text: 'Ich halte hier die Kopie eines Schreibens von einem OEM zum Datenaustausch über Catena-X. Haben Sie das auch bekommen?' },
+    { label: 'Entwaffnend', text: 'Wenn ich Ihnen sage, dass ich anrufe wegen dem Druck der OEMs zum Datenaustausch über Catena-X – sagen Sie mir dann, dass Sie kein Interesse oder bereits einen Partner haben?' },
+    { label: 'Webinar-Einladung', text: 'Wir veranstalten am 16.04. ein Webinar zu Catena-X und ich wollte Sie nochmal persönlich dazu einladen.\n\nDabei geht es konkret darum, wie Zulieferer die OEM-Anforderungen strukturiert angehen – ohne dass es zum großen IT-Projekt wird.\n\nWie weit ist das Thema Catena-X bei Ihnen intern schon auf dem Radar?' }
+  ]},
+  { label: 'Rahmen', variants: [
+    { label: 'Klassisch 3-Schritte', text: 'Ich stelle Ihnen ein paar Fragen, um zu verstehen wo Sie aktuell stehen.\nDanach zeige ich kurz, wie wir andere Zulieferer bei genau diesem Thema unterstützen.\nUnd dann schauen wir gemeinsam, ob und wie das für Sie sinnvoll sein könnte.' },
+    { label: 'Nutzenfokus', text: 'Mein Ziel ist nicht, Ihnen eine Standard-Software zu verkaufen. Ich möchte verstehen, wo Sie bei der Umsetzung stehen und prüfen, ob wir die Komplexität für Sie so reduzieren können, dass Ihre Datenprozesse am Ende effizienter sind als vorher. Passt das für Sie?' },
+    { label: 'Situationsanalyse', text: 'Wir schauen zuerst gemeinsam auf Ihre Situation und die Herausforderungen, die der OEM-Druck gerade erzeugt. Dann zeige ich Ihnen, wie wir Ihr Data Management so aufsetzen können, dass Sie die Anforderungen sicher erfüllen und gleichzeitig internen Aufwand reduzieren.\n\nKlingt das als Rahmen für Sie gut?' }
+  ]},
+  { label: 'Problem', variants: [
+    { label: '4 Diagnosefragen', text: '• Welche konkreten Anforderungen oder Fristen hat Ihr OEM aktuell kommuniziert?\n• Wo stehen Sie momentan beim Thema Catena-X – organisatorisch und technisch?\n• Welche Datenprozesse laufen bereits? Wo klemmt es?\n• Wie stark belastet das Thema gerade Ihre Teams?' },
+    { label: 'Problembewusstsein schärfen', text: 'Was ich bei vielen Zulieferern gerade sehe:\n\nDer OEM verlangt Catena-X-konforme Daten, aber intern fehlt Klarheit – welche Daten, in welcher Qualität und in welcher Struktur.\nDie Teams sind fachlich überlastet, weil Catena-X zusätzliche Komplexität erzeugt.\nEs besteht die Sorge, teure Fehler zu machen – z. B. ineffiziente ETL-Strecken aufzubauen, die später wieder verworfen werden müssen.\n\nKommt Ihnen das bekannt vor?' },
+    { label: '3 Kernprobleme', text: 'Wir helfen Zulieferern dabei, die Komplexität von Catena-X stark zu reduzieren. Denn in der Praxis entstehen sonst drei große Probleme:\n\nProblem 1 – Technische Komplexität: Viele starten direkt mit Tools – ohne vorher zu klären, wie die Daten strukturiert sein sollten.\n\nProblem 2 – Ineffiziente Datenprozesse: Wenn Datenprozesse nicht sauber aufgebaut sind, entstehen teure manuelle Prozesse.\n\nProblem 3 – Wissensabhängigkeit: Viele Unternehmen holen sich externe Unterstützung, bauen aber intern kein Wissen auf.' }
+  ]},
+  { label: 'Nutzen', variants: [
+    { label: '4 Kernnutzen', text: 'Wir reduzieren die Komplexität.\nSie müssen nicht jedes Detail verstehen – wir brechen es auf das Wesentliche herunter.\n\nWir verhindern ineffiziente, teure Datenprozesse.\nViele Zulieferer investieren in Datenpipelines, die nicht OEM-konform oder nicht skalierbar sind.\n\nWir bauen nachhaltiges Wissen in Ihren Teams auf.\nDamit Sie langfristig unabhängig sind.\n\nWir helfen, die OEM-Anforderungen sicher zu erfüllen.\nOhne Stress, ohne Trial-and-Error, ohne versteckte Aufwände.' },
+    { label: 'Compliance + Effizienz + Zukunft', text: 'Catena-X muss kein reiner Kostentreiber sein. Unser Ansatz verfolgt drei klare Ziele:\n\nCompliance ohne Chaos: OEM-Anforderungen punktgenau erfüllen, ohne den Betrieb aufzuhalten.\n\nEffizienz: Keine teuren Insellösungen, die in zwei Jahren wieder abgerissen werden.\n\nZukunftssicherheit: Den "Druck von oben" in einen sauberen Datenprozess transformieren, der Ihr Unternehmen digitaler und wettbewerbsfähiger macht.' }
+  ]},
+  { label: 'Ergebnis', variants: [
+    { label: 'Konkrete Lieferergebnisse', text: 'Realistische Ergebnisse nach wenigen Wochen:\n\n→ klare Datenanforderungen pro OEM und Use Case\n→ funktionierende ETL-Strecken und Datenmapping\n→ interne Teams verstehen die logischen Zusammenhänge\n→ lieferfähige, konforme Datenprodukte' },
+    { label: '3-Phasen-Roadmap', text: 'Schritt 1 – Standortbestimmung:\nWelche OEM-Anforderungen kommen auf Sie zu? Welche Daten sind betroffen?\n→ Ergebnis: klare Catena-X Roadmap\n\nSchritt 2 – Data-Management Struktur aufbauen:\nDatenverantwortlichkeiten, Datenflüsse, ETL-Prozesse.\n\nSchritt 3 – Enablement Ihres Teams:\nWorkshops, gemeinsame Umsetzung, klare Dokumentation.' }
+  ]},
+  { label: 'USP', variants: [
+    { label: 'Kurz & prägnant', text: 'Was uns von IT-Häusern unterscheidet? Die meisten wollen Ihnen eine fertige Plattform verkaufen. Wir sind Data-Management-Spezialisten mit Fokus auf Catena-X. Wir schauen uns erst den Prozess an – dann die Technik. Wir reduzieren Komplexität, statt neue zu schaffen.\n\nKurz: Wir sind der Puffer zwischen Ihnen und den hohen Erwartungen der OEMs.' },
+    { label: '4 Differenzierungspunkte', text: '1. Fachliches Use-Case-Verständnis + tiefes Catena-X-Know-how.\n   Viele Berater kennen nur die Technik – wir kennen die OEM-Logik dahinter.\n\n2. Wissensaufbau im Team.\n   Sie werden nicht abhängig von Externen.\n\n3. Catena-X auf das Wesentliche reduziert.\n   Kein Buzzword-Chaos, keine Überkomplexität.\n\n4. Fehlinvestitionen verhindern.\n   Keine Zeit und kein Budget für falsche Datenstrukturen.' },
+    { label: '3 Unterschiede (kompakt)', text: '1. Fokus Komplexitätsreduktion – konkrete umsetzbare Schritte statt Theorie.\n\n2. Data Management vor Technologie – Daten und Prozesse zuerst, nicht Connector und Plattform.\n\n3. Aufbau interner Kompetenz – Ihr Team steuert das Thema langfristig selbst.' }
+  ]},
+  { label: 'Angebot', variants: [
+    { label: 'Quick-Check + Roadmap + Transfer', text: 'Wir gehen das in drei Schritten an:\n\nQuick-Check: Wo stehen Ihre Daten aktuell und was fehlt konkret für den Catena-X Standard?\n\nRoadmap: Umsetzungsplan, der OEM-Vorgaben erfüllt, aber Ihre internen Ressourcen schont.\n\nKnowledge Transfer: Wissen direkt in Ihrem Team aufbauen – nicht um uns unverzichtbar zu machen, sondern um Ihre Leute fit zu machen.' },
+    { label: 'Vollständiges Portfolio', text: '→ Catena-X Readiness Analyse: Daten, Systeme, Verantwortlichkeiten, OEM-Anforderungen prüfen.\n\n→ ETL- und Datenmapping-Prozesse aufbauen: sauber, skalierbar, dokumentiert.\n\n→ Catena-X Datenmodelle implementieren: fachlich korrekt, OEM-konform, technisch robust.\n\n→ Team-Enablement: Schulungen + Wissensaufbau für souveräne interne Betreuung.' }
+  ]},
+  { label: 'Abschluss', variants: [
+    { label: '60-min Workshop-Termin', text: '[Name], lassen Sie uns in einem 60-minütigen Deep-Dive-Workshop Ihre aktuelle Datenstruktur gegen die Catena-X Anforderungen halten. Danach wissen Sie exakt, wo die Lücken sind – unabhängig davon, ob wir danach weiter zusammenarbeiten.\n\nHaben Sie nächste Woche Dienstag oder Mittwoch Vormittag Zeit?' },
+    { label: 'Readiness-Termin (weich)', text: 'Ein strukturierter Catena-X Data-Management Check wäre für Sie sinnvoll.\n\n→ Ihre aktuelle Situation analysieren\n→ OEM-Anforderungen strukturieren\n→ konkrete Handlungsfelder identifizieren\n\nAm Ende: eine klare Roadmap. Sie können jederzeit aussteigen.' },
+    { label: 'Readiness-Termin (stark)', text: 'Damit Sie die OEM-Anforderungen sauber erfüllen und keine unnötigen Kosten entstehen, schlage ich vor:\n\nEin Catena-X Readiness-Termin. Wir klären:\n→ welche Datenmodelle Sie wirklich brauchen\n→ wie groß der Aufwand bei Ihnen ist\n→ welche Risiken wir eliminieren können\n\nAm Ende: strukturierter Fahrplan. Jederzeit ausstiegsmöglich.\n\nSoll ich Ihnen zwei Terminvorschläge schicken?' }
+  ]}
+];
+
+const objections = [
+  { title: '"Kein Interesse"', responses: [
+    { label: 'Grund hinterfragen', text: 'Das verstehe ich. Liegt das daran, dass Sie das Thema Catena-X bereits voll im Griff haben, oder ist der Druck von OEM-Seite bei Ihnen noch nicht so hoch – oder ist es einfach der Zeitpunkt?' },
+    { label: '30-Sekunden-Angebot', text: 'Völlig legitim. Kann ich Ihnen lediglich in 30 Sekunden aufzeigen, wie Sie über Catena-X dem Druck der OEMs entgegentreten – und dann legen wir auf?' },
+    { label: 'Entzauberung', text: 'Das höre ich oft – bis die erste offizielle Aufforderung vom OEM im Postfach liegt. Sollen wir das Thema in 30 Sekunden "entzaubern", damit es für Sie vom Tisch ist?' },
+    { label: '15-min Check-In', text: 'Vielleicht macht dann ein 15-min-Check-In Sinn – einfach um sicherzugehen, dass Sie keine OEM-Anforderungen verpassen. Ohne dass wir irgendetwas verkaufen.' },
+    { label: 'Ansprechpartner erfragen', text: 'Alles klar. Darf ich fragen: Wer wäre bei Ihnen der richtige Ansprechpartner, falls das Thema doch einmal relevant wird?' }
+  ], followups: [
+    { label: 'Zurück zu Rahmen setzen', phase: 2, text: 'Wenn ich Ihnen kurz zeigen darf, wie andere Zulieferer mit genau dieser Frage umgehen – lohnt sich das für Sie in 2 Minuten?' },
+    { label: 'Problem ansprechen', phase: 3, text: 'Darf ich kurz fragen: Kommen von Ihren OEMs aktuell schon erste Signale in Richtung Datentransparenz oder Catena-X?' },
+    { label: 'Direkt zum Angebot', phase: 7, text: 'Ich würde gerne ganz konkret werden: Was wäre für Sie ein sinnvoller erster Schritt, den wir ohne großen Aufwand angehen könnten?' }
+  ]},
+  { title: '"Keine Zeit"', responses: [
+    { label: 'Wir übernehmen die Arbeit', text: 'Das kann ich gut nachvollziehen – genau deswegen machen wir den Prozess für unsere Kunden so leicht wie möglich. Die meiste Arbeit übernehmen wir.' },
+    { label: 'Zeit-Paradox', text: 'Genau das ist der Punkt: Ohne saubere Prozesse kostet Catena-X später viel mehr Zeit. Ein kurzer Einstieg heute spart hunderte Stunden in den nächsten Monaten.' },
+    { label: '10-Minuten-Angebot', text: 'Ich zeige Ihnen in 10 Minuten, wie wir die Komplexität für Ihr Team so reduzieren, dass Sie wieder Zeit für Ihr Kerngeschäft haben. Passt Ihnen Dienstag 09:00 Uhr?' },
+    { label: '2-Minuten-Pitch', text: 'Wenn ich Ihnen in 120 Sekunden den entscheidenden Punkt nenne, warum andere Zulieferer gerade ihre Datenprozesse umstellen – haben Sie die Zeit noch?' },
+    { label: 'Besserer Zeitpunkt', text: 'Wann wäre denn ein besserer Zeitpunkt, um über die Vermeidung von teuren manuellen Datenmeldungen zu sprechen? Nächsten Monat oder eher im Quartalswechsel?' }
+  ], followups: [
+    { label: 'Rahmen setzen', phase: 2, text: 'Damit wir heute die Zeit optimal nutzen: Ich mache es kurz und konkret. Darf ich in 3 Punkten zeigen, was für Sie konkret auf dem Spiel steht?' },
+    { label: 'Nutzen zeigen', phase: 4, text: 'Wie viel Zeit investiert Ihr Team aktuell manuell in Datenanfragen von OEMs? Genau da setzen wir an.' },
+    { label: 'Zum Abschluss', phase: 8, text: 'Dann schlage ich vor: Ein 30-minütiger Readiness-Check – der zeigt Ihnen sofort, wo Ihre größten Zeitfresser beim Thema Catena-X liegen.' }
+  ]},
+  { title: '"Haben bereits einen Partner"', responses: [
+    { label: 'Bereich erfragen', text: 'Das ist eine gute Situation. Darf ich fragen, in welchem Bereich Sie zusammenarbeiten – eher technisch oder auch im Data Management?' },
+    { label: 'Ergänzende Rolle', text: 'Unsere Rolle ist häufig eher ergänzend – besonders beim Aufbau effizienter Datenprozesse und beim Wissensaufbau im Team.' },
+    { label: 'Wissensaufbau-Lücke', text: 'Top. Haben Sie mit Ihrem Partner auch schon den Bereich "Wissensaufbau im eigenen Team" gelöst – oder sind Sie da aktuell noch voll vom externen Support abhängig?' },
+    { label: 'Schnittmenge benennen', text: 'Die meisten Partner decken die Technik ab – wir kombinieren Technik + fachliche Use-Case-Logik + OEM-Anforderungen. Genau diese Schnittmenge fehlt oft.' }
+  ], followups: [
+    { label: 'Problem vertiefen', phase: 3, text: 'Wie deckt Ihr aktueller Partner die OEM-spezifischen Datenanforderungen ab – also zum Beispiel Datenmodelle wie PCF oder Traceability?' },
+    { label: 'USP zeigen', phase: 6, text: 'Was unterscheidet uns: Wir fokussieren uns nicht auf Infrastruktur, sondern auf die Prozesse und das Wissen dahinter. Darf ich das kurz ausführen?' },
+    { label: 'Angebot machen', phase: 7, text: 'Viele Kunden nutzen uns ergänzend für einen strukturierten Catena-X Check – komplett unabhängig vom bestehenden Partner. Wäre das eine Option?' }
+  ]},
+  { title: '"Kein Bedarf"', responses: [
+    { label: 'Grund verstehen', text: 'Kein Bedarf, weil Sie Catena-X bereits sauber abgedeckt haben – oder weil noch unklar ist, was wirklich gefordert wird?' },
+    { label: 'Präventiv', text: 'Der Bedarf entsteht oft erst, wenn OEMs Daten ablehnen oder Fristen setzen. Mein Ziel ist, Sie vor genau solchen Situationen zu schützen.' },
+    { label: 'Pflicht kommt', text: 'Kein Bedarf an der Beratung oder kein Bedarf an der Erfüllung der OEM-Vorgaben? Denn Letzteres wird bald zur Pflicht für die Lieferberechtigung.' },
+    { label: 'Case Study anbieten', text: 'Dürfte ich Ihnen eine kurze Case Study schicken, wie ein ähnlicher Zulieferer das Thema gelöst hat – falls der Bedarf doch schneller kommt als gedacht?' }
+  ], followups: [
+    { label: 'Problem sichtbar machen', phase: 3, text: 'Kommen von Ihren OEMs bereits Anfragen zu spezifischen Datenpunkten wie Product Carbon Footprint oder Qualitätsdaten?' },
+    { label: 'Nutzen erklären', phase: 4, text: 'Darf ich Ihnen in 2 Minuten zeigen, was Zulieferer, die früh gestartet sind, heute konkret anders machen?' },
+    { label: 'Abschluss versuchen', phase: 8, text: 'Was wäre für Sie der konkrete Auslöser, das Thema anzugehen – eine OEM-Frist, ein internes Projekt oder etwas anderes?' }
+  ]},
+  { title: '"Warten erst ab"', responses: [
+    { label: 'Frühzeitige Vorbereitung lohnt sich', text: 'Das hören wir häufiger. Gleichzeitig beobachten wir, dass OEM-Anforderungen oft relativ kurzfristig konkret werden. Unternehmen, die vorher zumindest ihre Datenstrukturen vorbereitet haben, sind dann deutlich entspannter.' }
+  ], followups: [
+    { label: 'Problem konkretisieren', phase: 3, text: 'Welche Signale bekommen Sie aktuell von Ihren OEMs? Gibt es schon erste Fristen oder Roadmaps?' },
+    { label: 'Ergebnis zeigen', phase: 5, text: 'Was wäre für Sie ein realistisches Ergebnis, wenn Sie in 4 Wochen wüssten wo Sie stehen?' },
+    { label: 'Angebot: sanfter Einstieg', phase: 7, text: 'Wir können ganz ohne Verpflichtung starten: Ein Quick-Check zeigt Ihnen in kurzer Zeit, ob und wo Handlungsbedarf besteht.' }
+  ]},
+  { title: '"Haben interne IT-Abteilung"', responses: [
+    { label: 'Als Enabler positionieren', text: 'Das ist eine sehr gute Voraussetzung. Unsere Rolle ist meistens eher, den strukturierten Rahmen zu schaffen, damit die IT nicht alles selbst herausfinden muss.' }
+  ], followups: [
+    { label: 'Problem zeigen', phase: 3, text: 'Wie beschäftigt sich Ihre IT aktuell mit Catena-X – hat sie schon klare Anforderungen aus dem Business, oder läuft das noch parallel?' },
+    { label: 'USP erklären', phase: 6, text: 'IT-Teams sind stark im Bauen – wir sind stark im Strukturieren. Darf ich zeigen, wie das zusammenspielt?' },
+    { label: 'Angebot für IT-Teams', phase: 7, text: 'Wir haben Formate speziell für IT-Teams: Ein strukturierter Workshop, der die fachlichen Anforderungen klärt, bevor die IT loslegt.' }
+  ]},
+  { title: '"Keine internen Kapazitäten"', responses: [
+    { label: 'Kompakte Analysephase', text: 'Genau deshalb starten viele Unternehmen mit einer kompakten Analysephase, die relativ wenig interne Ressourcen bindet.' }
+  ], followups: [
+    { label: 'Rahmen setzen', phase: 2, text: 'Was wäre für Sie machbar – ein halber Tag in den nächsten 4 Wochen, um Klarheit über Ihre Catena-X Situation zu bekommen?' },
+    { label: 'Nutzen zeigen', phase: 4, text: 'Unser Ziel ist genau das: Wir nehmen Ihrem Team die Arbeit ab und liefern ein klares Bild, ohne wochenlange interne Abstimmung.' },
+    { label: 'Minimal-Angebot', phase: 7, text: 'Der kleinste Einstieg ist unser Readiness-Check – 1-2 Termine, wir machen 80% der Arbeit, Sie bekommen eine klare Roadmap.' }
+  ]},
+  { title: '"Wissen nicht welche Daten gebraucht werden"', responses: [
+    { label: 'Genau unsere Stärke', text: 'Das ist tatsächlich der Normalfall. Ein großer Teil unserer Arbeit besteht genau darin, OEM-Anforderungen zu analysieren und in konkrete Datenanforderungen zu übersetzen.' }
+  ], followups: [
+    { label: 'Problem strukturieren', phase: 3, text: 'Von welchem OEM kommt der stärkste Druck – oder ist das noch diffus aus verschiedenen Richtungen?' },
+    { label: 'Ergebnis zeigen', phase: 5, text: 'Genau das ist unser erster Schritt: Wir übersetzen OEM-Anforderungen in eine klare Liste – welche Daten, welche Systeme, welche Fristen.' },
+    { label: 'Zum Angebot', phase: 7, text: 'Unser Readiness-Check klärt genau das: Welche Daten braucht welcher OEM – und was fehlt Ihnen aktuell noch?' }
+  ]},
+  { title: '"Klingt nach einem großen Projekt"', responses: [
+    { label: 'Klein starten', text: 'Das muss es nicht sein. Viele Unternehmen starten mit einem kleinen Einstieg, um erstmal Klarheit zu bekommen.' }
+  ], followups: [
+    { label: 'Rahmen verkleinern', phase: 2, text: 'Darf ich kurz zeigen, wie ein typischer Einstieg bei uns aussieht? Konkret: Was wir in den ersten 2-3 Wochen gemeinsam erarbeiten.' },
+    { label: 'Ergebnis konkretisieren', phase: 5, text: 'Was wäre für Sie ein "kleines, aber wertvolles" erstes Ergebnis – z.B. Klarheit über Ihre Top-3 OEM-Anforderungen?' },
+    { label: 'Angebot: Quick-Check', phase: 7, text: 'Unser Quick-Check ist bewusst kompakt gehalten – kein Großprojekt, sondern ein strukturierter Einstieg mit sofortigem Mehrwert.' }
+  ]},
+  { title: '"Müssen intern erst abstimmen"', responses: [
+    { label: 'Stakeholder erfragen', text: 'Absolut verständlich. Wer ist denn bei Ihnen typischerweise in solche Entscheidungen noch eingebunden?' }
+  ], followups: [
+    { label: 'Rahmen für Abstimmung', phase: 2, text: 'Wäre es hilfreich, wenn ich Ihnen eine kurze Zusammenfassung schicke, die Sie intern weitergeben können – mit den wichtigsten Punkten auf einer Seite?' },
+    { label: 'Nutzen für Entscheider', phase: 4, text: 'Was sind die typischen Fragen, die Ihr Management stellen wird? Ich kann Ihnen helfen, diese vorab zu beantworten.' },
+    { label: 'Nächsten Schritt sichern', phase: 8, text: 'Wann wäre ein guter Zeitpunkt für ein kurzes Gespräch mit den relevanten Stakeholdern – vielleicht in 1-2 Wochen?' }
+  ]},
+  { title: '"Haben bereits Catena-X Lösung"', responses: [
+    { label: 'Datenprozesse dahinter', text: 'Das ist interessant. Häufig liegt der größte Aufwand weniger in der Infrastruktur, sondern in den Datenprozessen dahinter. Welche Aspekte decken Sie damit ab?' }
+  ], followups: [
+    { label: 'Problem aufdecken', phase: 3, text: 'Wie läuft aktuell der Prozess ab, wenn ein OEM neue Datenanforderungen stellt – wer kümmert sich darum und wie lange dauert das?' },
+    { label: 'USP positionieren', phase: 6, text: 'Unsere Stärke liegt nicht in der Plattform, sondern in der Logik dahinter: Datenmodelle, OEM-Konformität, Wissensaufbau. Genau das fehlt oft auch bei bestehenden Lösungen.' },
+    { label: 'Ergänzungs-Angebot', phase: 7, text: 'Wir würden gerne einen kurzen Check machen: Wie gut deckt Ihre aktuelle Lösung die OEM-Anforderungen der nächsten 12 Monate ab?' }
+  ]},
+  { title: '"Keine Abhängigkeit von Beratern"', responses: [
+    { label: 'Wissensaufbau ist das Ziel', text: 'Das ist ein sehr wichtiger Punkt. Unser Ziel ist tatsächlich das Gegenteil: Wissen in Ihrem Team aufzubauen, damit Sie langfristig unabhängig sind.' }
+  ], followups: [
+    { label: 'USP vertiefen', phase: 6, text: 'Darf ich zeigen, wie unser Knowledge-Transfer-Ansatz konkret aussieht? Wir haben Kunden, die nach 3 Monaten komplett eigenständig arbeiten.' },
+    { label: 'Ergebnis zeigen', phase: 5, text: 'Unser Ziel ist: Nach unserem Engagement kann Ihr Team Catena-X selbst steuern – das ist unser Erfolgsmaßstab.' },
+    { label: 'Angebot mit Exit-Option', phase: 7, text: 'Starten wir mit einem klar abgegrenzten Modul – Sie sehen direkt, was Sie lernen und was Sie danach selbst können.' }
+  ]},
+  { title: '"Angst vor hohen Kosten"', responses: [
+    { label: 'Kosten durch Ineffizienz', text: 'Die größten Kosten entstehen häufig nicht durch Catena-X selbst, sondern durch ineffiziente Datenprozesse. Genau das wollen wir verhindern.' }
+  ], followups: [
+    { label: 'Problem monetarisieren', phase: 3, text: 'Wie viel Zeit investiert Ihr Team aktuell manuell für Datenanfragen? Selbst 5 Stunden pro Woche summieren sich schnell auf tausende Euro im Jahr.' },
+    { label: 'Nutzen gegenüberstellen', phase: 4, text: 'Was kostet es Sie, wenn OEM-Anforderungen nicht rechtzeitig erfüllt werden – Lieferstopps, Pönalen, Nacharbeit?' },
+    { label: 'Günstiger Einstieg', phase: 7, text: 'Unser Quick-Check ist bewusst niedrigschwellig – ein kleiner Investment für maximale Klarheit, bevor Sie größere Entscheidungen treffen.' }
+  ]},
+  { title: '"Schicken Sie erst Infos"', responses: [
+    { label: 'Relevant qualifizieren', text: 'Sehr gerne. Damit ich Ihnen etwas wirklich Relevantes schicken kann: Welche Aspekte von Catena-X sind für Sie aktuell am interessantesten?' }
+  ], followups: [
+    { label: 'Zurück zum Rahmen', phase: 2, text: 'Bevor ich etwas schicke: Darf ich kurz fragen, wo Sie aktuell stehen – dann kann ich genau die richtigen Informationen zusammenstellen.' },
+    { label: 'Problem verstehen', phase: 3, text: 'Was ist für Sie die konkrete offene Frage? Geht es um technische Umsetzung, OEM-Anforderungen oder eher um den Business Case?' },
+    { label: 'Termin verknüpfen', phase: 8, text: 'Ich schicke Ihnen gerne etwas zu – und schlage gleichzeitig einen kurzen Folgetermin vor, damit wir offene Fragen direkt klären können.' }
+  ]},
+  { title: '"Haben gerade wichtigere Themen"', responses: [
+    { label: 'Zeitpunkt erfragen', text: 'Darf ich fragen, ob Catena-X bei Ihnen eher ein Thema für dieses oder nächstes Jahr ist?' }
+  ], followups: [
+    { label: 'Priorisierung hinterfragen', phase: 3, text: 'Was sind aktuell die Top-3-Themen bei Ihnen? Ich frage, weil Catena-X bei vielen Zulieferern direkt mit anderen laufenden Projekten zusammenhängt.' },
+    { label: 'Dringlichkeit aufzeigen', phase: 4, text: 'Ich verstehe das. Gleichzeitig: OEM-Fristen warten nicht auf freie Kapazitäten. Darf ich in 60 Sekunden zeigen, warum der Zeitpunkt trotzdem wichtig ist?' },
+    { label: 'Folgetermin sichern', phase: 8, text: 'Dann lass uns einen Termin in 4 Wochen vereinbaren – so haben Sie Zeit zu priorisieren und wir haben ein konkretes Datum.' }
+  ]}
+];
+
+const questionCategories = [
+  { name: 'Einstieg & Situation', questions: [
+    'Wie stark beschäftigt Sie das Thema Catena-X aktuell schon im Alltag?',
+    'In welchem Zusammenhang sind Sie erstmals mit Catena-X in Berührung gekommen?',
+    'Wie viel Zeit investiert Ihr Team aktuell pro Woche manuell, um Datenanfragen von OEMs zu beantworten?',
+    'Gibt es in Ihrem Haus bereits eine zentrale Strategie für das Data Management – oder lösen die Abteilungen das Thema Catena-X momentan eher isoliert?'
+  ]},
+  { name: 'OEM-Anforderungen', questions: [
+    'Welche Themen werden von Ihren Kunden am häufigsten angesprochen?',
+    'Geht es dabei eher um einzelne Use Cases oder schon um eine grundsätzliche Anbindung an Catena-X?',
+    'Gibt es bereits Fristen oder Roadmaps von OEM-Seite?',
+    'Wie klar sind die Anforderungen aktuell für Sie?',
+    'Welche konkreten Anforderungen oder Fristen hat Ihr OEM aktuell kommuniziert?'
+  ]},
+  { name: 'Datenlandschaft', questions: [
+    'Aus welchen Systemen müssten die relevanten Daten bei Ihnen eigentlich kommen?',
+    'Gibt es bereits eine Übersicht über die relevanten Datenquellen?',
+    'Wie strukturiert sind die Daten aktuell organisiert?',
+    'Gibt es bereits definierte Datenprozesse?',
+    'Welche technischen Anforderungen von Catena-X bereiten Ihrer IT-Abteilung aktuell die größten Kopfschmerzen?'
+  ]},
+  { name: 'Interne Strukturen', questions: [
+    'Gibt es bei Ihnen bereits eine Datenstrategie oder Data Governance?',
+    'Wie werden aktuell Themen rund um Datenmanagement koordiniert?',
+    'Arbeiten IT und Fachbereiche bei Datenthemen eng zusammen?',
+    'Wer kümmert sich intern bei Ihnen um das Thema Catena-X?'
+  ]},
+  { name: 'Herausforderungen', questions: [
+    'Was ist aktuell die größte Herausforderung beim Thema Catena-X?',
+    'Wo sehen Sie aktuell die größte Unsicherheit?',
+    'Welche Fragen sind intern noch ungeklärt?',
+    'Was macht das Thema für Ihr Unternehmen besonders komplex?'
+  ]},
+  { name: 'Risiko-Fragen', questions: [
+    'Was würde passieren, wenn OEM-Anforderungen kurzfristig konkreter werden?',
+    'Was würde es für Ihre Lieferantenbewertung bedeuten, wenn Sie die geforderten Datenstandards zum Stichtag X nicht erfüllen können?',
+    'Angenommen, der OEM erhöht die Frequenz der Datenabfragen – wäre Ihr aktueller Prozess skalierbar?',
+    'Wie gut fühlen Sie sich aktuell auf solche Anforderungen vorbereitet?'
+  ]},
+  { name: 'Zielbild', questions: [
+    'Wenn Sie ein Jahr nach vorne schauen – wo möchten Sie beim Thema Catena-X stehen?',
+    'Was wäre für Sie ein gutes Ergebnis im Umgang mit diesen Anforderungen?',
+    'Wenn wir die Komplexität der Datenübergabe auf ein Minimum reduzieren – was könnte Ihr Team mit der gewonnenen Zeit stattdessen im Kerngeschäft erreichen?',
+    'Wie wichtig ist es Ihnen, dass das Wissen über Catena-X langfristig in Ihrem eigenen Team bleibt?'
+  ]},
+  { name: 'Entscheidung & Abschluss', questions: [
+    'Wer wäre typischerweise in eine Entscheidung zu diesem Thema eingebunden?',
+    'Welche Kriterien wären für Sie wichtig, wenn Sie externe Unterstützung einbeziehen?',
+    'Was ist für Sie das wichtigste Kriterium bei der Wahl eines Partners: Die reine technische Umsetzung oder die strategische Prozessberatung?',
+    'Mal ganz ehrlich: Was steht einer Zusammenarbeit aktuell noch im Weg, außer der Budgetfrage?',
+    'Wenn wir heute einen Weg finden, die OEM-Anforderungen rechtssicher und effizient zu erfüllen – wäre das ein Grund, das Projekt priorisiert anzugehen?',
+    'Wäre ein kurzer Workshop sinnvoll, um eine klare Roadmap zu entwickeln?'
+  ]}
+];
+
+// STATE
+let currentView = 'sales';
+let currentPhaseIdx = 0;
+const doneSet = new Set();
+let activeObjIdx = -1;
+let activeFragenCat = 0;
+
+// TIMER
+
+
+// VIEWS
+function buildStepperHTML() {
+  return phases.map((p, i) => {
+    const cls = i===currentPhaseIdx ? 'active' : doneSet.has(i) ? 'done' : '';
+    const num = doneSet.has(i) ? '✓' : i+1;
+    const arrow = i < phases.length-1 ? '<div class="phase-arrow">›</div>' : '';
+    return `<div class="phase-step ${cls}" onclick="gotoPhase(${i})"><div class="pnum">${num}</div>${p.label}</div>${arrow}`;
+  }).join('');
+}
+
+function renderAllSteppers() {
+  ['phaseStepper','phaseStepperE','phaseStepperF'].forEach(id => {
+    const el = document.getElementById(id);
+    if (el) el.innerHTML = buildStepperHTML();
+  });
+}
+
+function switchView(name) {
+  currentView = name;
+  document.querySelectorAll('.view').forEach(v => v.classList.remove('active'));
+  document.getElementById('view-'+name).classList.add('active');
+  document.querySelectorAll('.main-tab').forEach(t => t.classList.toggle('active', t.dataset.view === name));
+  renderAllSteppers();
+}
+
+// SALES
+function renderPhaseView() {
+  const phase = phases[currentPhaseIdx];
+  document.getElementById('salesPhaseTitle').textContent = phase.label;
+  document.getElementById('salesPhaseTag').textContent = 'Phase '+(currentPhaseIdx+1)+' / '+phases.length;
+  renderAllSteppers();
+  const body = document.getElementById('phaseBody');
+  const name = '[Name]';
+  body.innerHTML = phase.variants.map((v, vi) => {
+    const txt = v.text.replace(/\[Name\]/g, name).replace(/\[Name des Kunden\]/g, name);
+    return `<div class="variant-card" id="vc-${currentPhaseIdx}-${vi}" onclick="pickVariant(${currentPhaseIdx},${vi},this)">
+      <div class="variant-label">${v.label}<span class="copy-badge">Klicken zum Kopieren →</span></div>
+      <div class="variant-text">${esc(txt)}</div>
+    </div>`;
+  }).join('');
+  document.getElementById('btnBack').disabled = currentPhaseIdx === 0;
+  document.getElementById('btnNext').disabled = currentPhaseIdx === phases.length-1;
+  document.getElementById('btnNext').textContent = currentPhaseIdx === phases.length-2 ? '→ Abschluss' : 'Weiter →';
+}
+function pickVariant(phaseIdx, varIdx, el) {
+  document.querySelectorAll(`[id^="vc-${phaseIdx}-"]`).forEach(c => c.classList.remove('picked'));
+  el.classList.add('picked');
+  const name = '[Name]';
+  const txt = phases[phaseIdx].variants[varIdx].text.replace(/\[Name\]/g, name).replace(/\[Name des Kunden\]/g, name);
+  copyText(txt);
+}
+function gotoPhase(idx) {
+  if (currentPhaseIdx !== idx) doneSet.add(currentPhaseIdx);
+  currentPhaseIdx = idx;
+  switchView('sales');
+  renderPhaseView();
+}
+function prevPhase() { if (currentPhaseIdx > 0) gotoPhase(currentPhaseIdx-1); }
+function nextPhase() { if (currentPhaseIdx < phases.length-1) gotoPhase(currentPhaseIdx+1); }
+
+
+// PROGRESS
+
+// EINWÄNDE
+function renderEinwaende() {
+  document.getElementById('einwandList').innerHTML = objections.map((o, i) =>
+    `<button class="einwand-btn ${i===activeObjIdx?'active':''}" onclick="selectEinwand(${i})">${o.title}</button>`
+  ).join('');
+}
+function selectEinwand(idx) {
+  activeObjIdx = idx;
+  renderEinwaende();
+  const obj = objections[idx];
+  const phaseLabels = phases.map(p => p.label);
+  const responses = obj.responses.map((r, ri) =>
+    `<div class="response-card" id="rc-${idx}-${ri}" onclick="copyResp(${idx},${ri},this)">
+      <div class="resp-label">${r.label}</div>
+      <div class="resp-text">${esc(r.text)}</div>
+    </div>`
+  ).join('');
+  const followups = obj.followups ? `
+    <div class="followup-section">
+      <div class="followup-title">↪ Anschlussfragen &amp; Zurück zum Leitfaden</div>
+      ${obj.followups.map(f => `
+        <div class="followup-card" onclick="gotoPhase(${f.phase})">
+          <span class="followup-phase">${phaseLabels[f.phase]}</span>
+          <span class="followup-text">${esc(f.text)}</span>
+          <span class="followup-arrow">→</span>
+        </div>
+      `).join('')}
+    </div>` : '';
+  document.getElementById('einwandResponses').innerHTML = responses + followups;
+}
+function copyResp(oi, ri, el) {
+  copyText(objections[oi].responses[ri].text);
+  el.classList.add('flash');
+  setTimeout(() => el.classList.remove('flash'), 1000);
+}
+function jumpEinwand(idx) { switchView('einwaende'); selectEinwand(idx); }
+
+// FRAGEN
+function renderFragen(catIdx) {
+  activeFragenCat = catIdx;
+  document.getElementById('fragenCats').innerHTML = questionCategories.map((c, i) =>
+    `<button class="fragen-cat-btn ${i===catIdx?'active':''}" onclick="renderFragen(${i})">${c.name}</button>`
+  ).join('');
+  const cat = questionCategories[catIdx];
+  document.getElementById('fragenContent').innerHTML =
+    `<div class="fragen-group-title">${cat.name}</div>
+     <div class="q-cards">${cat.questions.map((q, qi) =>
+       `<div class="q-card" id="qc-${catIdx}-${qi}" onclick="copyQ(${catIdx},${qi},this)">${esc(q)}</div>`
+     ).join('')}</div>`;
+}
+function copyQ(ci, qi, el) {
+  copyText(questionCategories[ci].questions[qi]);
+  el.classList.add('flash');
+  setTimeout(() => el.classList.remove('flash'), 1200);
+}
+function jumpFragen(catIdx) { switchView('fragen'); renderFragen(catIdx); }
+
+// UTILS
+function esc(s) {
+  return s.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/\n/g,'<br>');
+}
+function copyText(txt) {
+  navigator.clipboard.writeText(txt).catch(() => {
+    const ta = document.createElement('textarea');
+    ta.value = txt; document.body.appendChild(ta); ta.select();
+    document.execCommand('copy'); ta.remove();
+  });
+  const t = document.getElementById('toast');
+  t.classList.add('show');
+  clearTimeout(t._t);
+  t._t = setTimeout(() => t.classList.remove('show'), 1600);
+}
+
+// INIT
+renderPhaseView();
+renderEinwaende();
+renderFragen(0);
+
+function openEmergency() {
+  document.getElementById('emergencyOverlay').classList.add('open');
+}
+function closeEmergency() {
+  document.getElementById('emergencyOverlay').classList.remove('open');
+}
+function closeEmergencyOutside(e) {
+  if (e.target === document.getElementById('emergencyOverlay')) closeEmergency();
+}
+function copyEmergency(idx, el) {
+  const texts = [
+    document.getElementById('eo-0').querySelector('.emergency-option-text').textContent,
+    document.getElementById('eo-1').querySelector('.emergency-option-text').textContent,
+    document.getElementById('eo-2').querySelector('.emergency-option-text').textContent
+  ];
+  copyText(texts[idx]);
+  el.classList.add('flash');
+  setTimeout(() => el.classList.remove('flash'), 1000);
+}
+</script>
+
+<!-- EMERGENCY MODAL -->
+<div class="emergency-overlay" id="emergencyOverlay" onclick="closeEmergencyOutside(event)">
+  <div class="emergency-modal">
+    <button class="emergency-close" onclick="closeEmergency()">✕</button>
+    <div class="emergency-modal-title">
+      Gesprächs-Notfall
+      <span class="badge">Sofort-Hilfe</span>
+    </div>
+    <div class="emergency-modal-sub">Kunde will abbrechen – wähle eine Reaktion und kopiere den Text direkt</div>
+
+    <div class="emergency-option" id="eo-0" onclick="copyEmergency(0, this)">
+      <div class="emergency-option-label">💛 Freundlich im Gedächtnis bleiben</div>
+      <div class="emergency-option-text">Das verstehe ich vollkommen – ich weiß, wie voll die Kalender gerade sind.
+
+Ich möchte mich kurz bedanken, dass Sie sich trotzdem die Zeit genommen haben. Catena-X wird in den nächsten Monaten bei vielen Zulieferern konkreter werden – ich würde mich freuen, wenn ich mich dann nochmal kurz melden darf.
+
+Darf ich in etwa 6–8 Wochen nochmal auf Sie zukommen? Ganz unverbindlich, einfach um zu sehen, ob sich etwas verändert hat.</div>
+    </div>
+
+    <div class="emergency-option" id="eo-1" onclick="copyEmergency(1, this)">
+      <div class="emergency-option-label">📅 Termin für einen anderen Zeitpunkt gewinnen</div>
+      <div class="emergency-option-text">Kein Problem, ich halte mich kurz.
+
+Bevor wir auflegen – darf ich direkt einen Folgetermin vorschlagen? Nicht um heute etwas zu entscheiden, sondern einfach damit wir das Thema nicht ganz aus den Augen verlieren.
+
+Wie sieht es bei Ihnen in zwei bis drei Wochen aus – wäre ein kurzer 20-Minuten-Slot am Dienstag oder Mittwoch Vormittag machbar? Ich schicke Ihnen gleich eine Einladung zu und wir können jederzeit absagen, wenn sich die Prioritäten ändern.</div>
+    </div>
+
+    <div class="emergency-option" id="eo-2" onclick="copyEmergency(2, this)">
+      <div class="emergency-option-label">🙏 Höflich um Namenserinnerung bitten</div>
+      <div class="emergency-option-text">Ich respektiere das vollkommen und möchte Ihre Zeit nicht länger in Anspruch nehmen.
+
+Ich hätte nur eine kleine Bitte: Wenn das Thema Catena-X bei Ihnen irgendwann konkreter wird – sei es durch OEM-Anforderungen, ein internes Projekt oder einfach weil der Druck steigt – dann würde ich mich sehr freuen, wenn Sie kurz an mich denken. Mein Name ist Leon Seelbach, Consileon.
+
+Sie müssen nichts zusagen. Aber falls Sie dann jemanden brauchen, der die Komplexität schnell reduziert – ich bin gerne der erste Anruf.</div>
+    </div>
+  </div>
+</div>
+</body>
+</html>
