@@ -4,7 +4,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Catena-X · Kaltakquise</title>
-<link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=JetBrains+Mono:wght@400;500&family=Literata:ital,wght@0,300;0,400;1,300&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=JetBrains+Mono:wght@400;500&family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;1,9..40,300&display=swap" rel="stylesheet">
 <style>
 :root {
   --bg: #f5f2ed;
@@ -29,7 +29,7 @@ html, body { height: 100%; overflow: hidden; }
 body {
   background: var(--bg);
   color: var(--ink);
-  font-family: 'Literata', Georgia, serif;
+  font-family: 'DM Sans', sans-serif;
   font-size: 14px;
   line-height: 1.6;
 }
@@ -90,7 +90,7 @@ body {
   border-radius: 7px;
   padding: 7px 12px;
   color: #fff;
-  font-family: 'Literata', Georgia, serif;
+  font-family: 'DM Sans', sans-serif;
   font-size: 13px;
   line-height: 1.5;
   resize: none;
@@ -827,42 +827,42 @@ body {
 const phases = [
   { label: 'Begrüßung & Einstieg', variants: [
     { label: 'Grußformel', text: 'Schönen guten Tag [Name], hier ist Leon Seelbach von der Firma Consileon.' },
-    { label: 'Standard-Einstieg', text: 'Viele Zulieferer bekommen aktuell Druck von OEMs, Daten über Catena-X bereitzustellen – oft ohne dass intern klare Strukturen dafür existieren.\n\nWie stark beschäftigt Sie das Thema Catena-X aktuell schon im Alltag?' },
+    { label: 'Standard-Einstieg', text: 'Viele Zulieferer bekommen aktuell Druck von OEMs, Daten über Catena-X bereitzustellen – oft ohne klare interne Strukturen.\n\nWie stark beschäftigt Sie das Thema aktuell schon im Alltag?' },
     { label: 'Einstieg mit Schreiben-Aufhänger', text: 'Ich halte hier die Kopie eines Schreibens von einem OEM zum Datenaustausch über Catena-X. Haben Sie das auch bekommen?' },
     { label: 'Entwaffnend', text: 'Wenn ich Ihnen sage, dass ich anrufe wegen dem Druck der OEMs zum Datenaustausch über Catena-X – sagen Sie mir dann, dass Sie kein Interesse oder bereits einen Partner haben?' },
-    { label: 'Webinar-Einladung', text: 'Wir veranstalten am 16.04. ein Webinar zu Catena-X und ich wollte Sie nochmal persönlich dazu einladen.\n\nDabei geht es konkret darum, wie Zulieferer die OEM-Anforderungen strukturiert angehen – ohne dass es zum großen IT-Projekt wird.\n\nWie weit ist das Thema Catena-X bei Ihnen intern schon auf dem Radar?' }
+    { label: 'Webinar-Einladung', text: 'Wir veranstalten am 16.04. ein Webinar zu Catena-X – ich wollte Sie persönlich einladen. Es geht konkret darum, wie Zulieferer OEM-Anforderungen strukturiert angehen, ohne dass es zum großen IT-Projekt wird.\n\nWie weit ist das Thema bei Ihnen intern schon auf dem Radar?' }
   ]},
   { label: 'Rahmen', variants: [
-    { label: 'Klassisch 3-Schritte', text: 'Ich stelle Ihnen ein paar Fragen, um zu verstehen wo Sie aktuell stehen.\nDanach zeige ich kurz, wie wir andere Zulieferer bei genau diesem Thema unterstützen.\nUnd dann schauen wir gemeinsam, ob und wie das für Sie sinnvoll sein könnte.' },
-    { label: 'Nutzenfokus', text: 'Mein Ziel ist nicht, Ihnen eine Standard-Software zu verkaufen. Ich möchte verstehen, wo Sie bei der Umsetzung stehen und prüfen, ob wir die Komplexität für Sie so reduzieren können, dass Ihre Datenprozesse am Ende effizienter sind als vorher. Passt das für Sie?' },
-    { label: 'Situationsanalyse', text: 'Wir schauen zuerst gemeinsam auf Ihre Situation und die Herausforderungen, die der OEM-Druck gerade erzeugt. Dann zeige ich Ihnen, wie wir Ihr Data Management so aufsetzen können, dass Sie die Anforderungen sicher erfüllen und gleichzeitig internen Aufwand reduzieren.\n\nKlingt das als Rahmen für Sie gut?' }
+    { label: 'Klassisch 3-Schritte', text: 'Ich stelle Ihnen ein paar Fragen, um zu verstehen wo Sie aktuell stehen. Danach zeige ich kurz, wie wir andere Zulieferer bei genau diesem Thema unterstützen. Und dann schauen wir gemeinsam, ob das für Sie sinnvoll sein könnte.' },
+    { label: 'Nutzenfokus', text: 'Mein Ziel ist nicht, Ihnen eine Standard-Software zu verkaufen. Ich möchte verstehen, wo Sie stehen und prüfen, ob wir die Komplexität so reduzieren können, dass Ihre Datenprozesse am Ende effizienter sind als vorher. Passt das für Sie?' },
+    { label: 'Situationsanalyse', text: 'Wir schauen zuerst gemeinsam auf Ihre Situation und die Herausforderungen, die der OEM-Druck erzeugt. Dann zeige ich, wie wir Ihr Data Management so aufsetzen können, dass Sie die Anforderungen sicher erfüllen und internen Aufwand reduzieren. Klingt das als Rahmen gut?' }
   ]},
   { label: 'Problem', variants: [
-    { label: '4 Diagnosefragen', text: '• Welche konkreten Anforderungen oder Fristen hat Ihr OEM aktuell kommuniziert?\n• Wo stehen Sie momentan beim Thema Catena-X – organisatorisch und technisch?\n• Welche Datenprozesse laufen bereits? Wo klemmt es?\n• Wie stark belastet das Thema gerade Ihre Teams?' },
-    { label: 'Problembewusstsein schärfen', text: 'Was ich bei vielen Zulieferern gerade sehe:\n\nDer OEM verlangt Catena-X-konforme Daten, aber intern fehlt Klarheit – welche Daten, in welcher Qualität und in welcher Struktur.\nDie Teams sind fachlich überlastet, weil Catena-X zusätzliche Komplexität erzeugt.\nEs besteht die Sorge, teure Fehler zu machen – z. B. ineffiziente ETL-Strecken aufzubauen, die später wieder verworfen werden müssen.\n\nKommt Ihnen das bekannt vor?' },
-    { label: '3 Kernprobleme', text: 'Wir helfen Zulieferern dabei, die Komplexität von Catena-X stark zu reduzieren. Denn in der Praxis entstehen sonst drei große Probleme:\n\nProblem 1 – Technische Komplexität: Viele starten direkt mit Tools – ohne vorher zu klären, wie die Daten strukturiert sein sollten.\n\nProblem 2 – Ineffiziente Datenprozesse: Wenn Datenprozesse nicht sauber aufgebaut sind, entstehen teure manuelle Prozesse.\n\nProblem 3 – Wissensabhängigkeit: Viele Unternehmen holen sich externe Unterstützung, bauen aber intern kein Wissen auf.' }
+    { label: '4 Diagnosefragen', text: 'Welche konkreten Anforderungen oder Fristen hat Ihr OEM kommuniziert? Wo stehen Sie beim Thema Catena-X – organisatorisch und technisch? Welche Datenprozesse laufen bereits, wo klemmt es? Wie stark belastet das Thema gerade Ihre Teams?' },
+    { label: 'Problembewusstsein schärfen', text: 'Was ich bei vielen Zulieferern gerade sehe: Der OEM verlangt Catena-X-konforme Daten, aber intern fehlt Klarheit – welche Daten, welche Qualität, welche Struktur. Die Teams sind überlastet, weil Catena-X zusätzliche Komplexität erzeugt. Und es besteht die Sorge, teure Fehler zu machen – ineffiziente ETL-Strecken aufzubauen, die später verworfen werden müssen.\n\nKommt Ihnen das bekannt vor?' },
+    { label: '3 Kernprobleme', text: 'Wir helfen Zulieferern, die Komplexität von Catena-X zu reduzieren. Drei typische Probleme entstehen sonst: Erstens starten viele direkt mit Tools, ohne vorher zu klären wie die Daten strukturiert sein sollten. Zweitens entstehen ohne saubere Datenprozesse teure manuelle Prozesse. Drittens bauen viele intern kein Wissen auf und bleiben abhängig von Externen.' }
   ]},
   { label: 'Nutzen', variants: [
-    { label: '4 Kernnutzen', text: 'Wir reduzieren die Komplexität.\nSie müssen nicht jedes Detail verstehen – wir brechen es auf das Wesentliche herunter.\n\nWir verhindern ineffiziente, teure Datenprozesse.\nViele Zulieferer investieren in Datenpipelines, die nicht OEM-konform oder nicht skalierbar sind.\n\nWir bauen nachhaltiges Wissen in Ihren Teams auf.\nDamit Sie langfristig unabhängig sind.\n\nWir helfen, die OEM-Anforderungen sicher zu erfüllen.\nOhne Stress, ohne Trial-and-Error, ohne versteckte Aufwände.' },
-    { label: 'Compliance + Effizienz + Zukunft', text: 'Catena-X muss kein reiner Kostentreiber sein. Unser Ansatz verfolgt drei klare Ziele:\n\nCompliance ohne Chaos: OEM-Anforderungen punktgenau erfüllen, ohne den Betrieb aufzuhalten.\n\nEffizienz: Keine teuren Insellösungen, die in zwei Jahren wieder abgerissen werden.\n\nZukunftssicherheit: Den "Druck von oben" in einen sauberen Datenprozess transformieren, der Ihr Unternehmen digitaler und wettbewerbsfähiger macht.' }
+    { label: '4 Kernnutzen', text: 'Wir reduzieren die Komplexität – Sie müssen nicht jedes Detail verstehen, wir brechen es auf das Wesentliche herunter. Wir verhindern ineffiziente Datenprozesse – keine Pipelines, die nicht OEM-konform oder nicht skalierbar sind. Wir bauen Wissen in Ihren Teams auf – damit Sie langfristig unabhängig sind. Und wir helfen, OEM-Anforderungen sicher zu erfüllen – ohne Stress und versteckte Aufwände.' },
+    { label: 'Compliance + Effizienz + Zukunft', text: 'Catena-X muss kein reiner Kostentreiber sein. Unser Ansatz verfolgt drei Ziele: Compliance ohne Chaos – OEM-Anforderungen punktgenau erfüllen, ohne den Betrieb aufzuhalten. Effizienz – keine teuren Insellösungen, die in zwei Jahren wieder abgerissen werden. Zukunftssicherheit – den Druck von oben in einen sauberen Datenprozess transformieren, der Ihr Unternehmen digitaler macht.' }
   ]},
   { label: 'Ergebnis', variants: [
-    { label: 'Konkrete Lieferergebnisse', text: 'Realistische Ergebnisse nach wenigen Wochen:\n\n→ klare Datenanforderungen pro OEM und Use Case\n→ funktionierende ETL-Strecken und Datenmapping\n→ interne Teams verstehen die logischen Zusammenhänge\n→ lieferfähige, konforme Datenprodukte' },
-    { label: '3-Phasen-Roadmap', text: 'Schritt 1 – Standortbestimmung:\nWelche OEM-Anforderungen kommen auf Sie zu? Welche Daten sind betroffen?\n→ Ergebnis: klare Catena-X Roadmap\n\nSchritt 2 – Data-Management Struktur aufbauen:\nDatenverantwortlichkeiten, Datenflüsse, ETL-Prozesse.\n\nSchritt 3 – Enablement Ihres Teams:\nWorkshops, gemeinsame Umsetzung, klare Dokumentation.' }
+    { label: 'Konkrete Lieferergebnisse', text: 'Realistische Ergebnisse nach wenigen Wochen: klare Datenanforderungen pro OEM und Use Case, funktionierende ETL-Strecken und Datenmapping, interne Teams verstehen die logischen Zusammenhänge, lieferfähige konforme Datenprodukte.' },
+    { label: '3-Phasen-Roadmap', text: 'Schritt 1 – Standortbestimmung: Welche OEM-Anforderungen kommen auf Sie zu, welche Daten sind betroffen? Ergebnis: klare Catena-X Roadmap.\nSchritt 2 – Data-Management aufbauen: Datenverantwortlichkeiten, Datenflüsse, ETL-Prozesse.\nSchritt 3 – Enablement: Workshops, gemeinsame Umsetzung, klare Dokumentation.' }
   ]},
   { label: 'USP', variants: [
-    { label: 'Kurz & prägnant', text: 'Was uns von IT-Häusern unterscheidet? Die meisten wollen Ihnen eine fertige Plattform verkaufen. Wir sind Data-Management-Spezialisten mit Fokus auf Catena-X. Wir schauen uns erst den Prozess an – dann die Technik. Wir reduzieren Komplexität, statt neue zu schaffen.\n\nKurz: Wir sind der Puffer zwischen Ihnen und den hohen Erwartungen der OEMs.' },
-    { label: '4 Differenzierungspunkte', text: '1. Fachliches Use-Case-Verständnis + tiefes Catena-X-Know-how.\n   Viele Berater kennen nur die Technik – wir kennen die OEM-Logik dahinter.\n\n2. Wissensaufbau im Team.\n   Sie werden nicht abhängig von Externen.\n\n3. Catena-X auf das Wesentliche reduziert.\n   Kein Buzzword-Chaos, keine Überkomplexität.\n\n4. Fehlinvestitionen verhindern.\n   Keine Zeit und kein Budget für falsche Datenstrukturen.' },
-    { label: '3 Unterschiede (kompakt)', text: '1. Fokus Komplexitätsreduktion – konkrete umsetzbare Schritte statt Theorie.\n\n2. Data Management vor Technologie – Daten und Prozesse zuerst, nicht Connector und Plattform.\n\n3. Aufbau interner Kompetenz – Ihr Team steuert das Thema langfristig selbst.' }
+    { label: 'Kurz & prägnant', text: 'Was uns von IT-Häusern unterscheidet? Die meisten wollen Ihnen eine fertige Plattform verkaufen. Wir sind Data-Management-Spezialisten mit Fokus auf Catena-X – wir schauen erst auf den Prozess, dann auf die Technik. Wir sind der Puffer zwischen Ihnen und den hohen Erwartungen der OEMs.' },
+    { label: '4 Differenzierungspunkte', text: '1. Use-Case-Verständnis + Catena-X-Know-how: Wir kennen die OEM-Logik, nicht nur die Technik.\n2. Wissensaufbau im Team: Sie werden nicht abhängig von Externen.\n3. Reduktion auf das Wesentliche: Kein Buzzword-Chaos, keine Überkomplexität.\n4. Fehlinvestitionen verhindern: Kein Budget für falsche Datenstrukturen.' },
+    { label: '3 Unterschiede (kompakt)', text: '1. Komplexitätsreduktion – umsetzbare Schritte statt Theorie.\n2. Data Management vor Technologie – Daten zuerst, nicht Connector und Plattform.\n3. Interne Kompetenz aufbauen – Ihr Team steuert das Thema langfristig selbst.' }
   ]},
   { label: 'Angebot', variants: [
-    { label: 'Quick-Check + Roadmap + Transfer', text: 'Wir gehen das in drei Schritten an:\n\nQuick-Check: Wo stehen Ihre Daten aktuell und was fehlt konkret für den Catena-X Standard?\n\nRoadmap: Umsetzungsplan, der OEM-Vorgaben erfüllt, aber Ihre internen Ressourcen schont.\n\nKnowledge Transfer: Wissen direkt in Ihrem Team aufbauen – nicht um uns unverzichtbar zu machen, sondern um Ihre Leute fit zu machen.' },
-    { label: 'Vollständiges Portfolio', text: '→ Catena-X Readiness Analyse: Daten, Systeme, Verantwortlichkeiten, OEM-Anforderungen prüfen.\n\n→ ETL- und Datenmapping-Prozesse aufbauen: sauber, skalierbar, dokumentiert.\n\n→ Catena-X Datenmodelle implementieren: fachlich korrekt, OEM-konform, technisch robust.\n\n→ Team-Enablement: Schulungen + Wissensaufbau für souveräne interne Betreuung.' }
+    { label: 'Quick-Check + Roadmap + Transfer', text: 'Wir gehen das in drei Schritten an: Quick-Check – wo stehen Ihre Daten und was fehlt für den Catena-X Standard? Roadmap – ein Umsetzungsplan, der OEM-Vorgaben erfüllt, aber Ihre Ressourcen schont. Knowledge Transfer – Wissen direkt in Ihrem Team aufbauen, damit Ihre Leute dauerhaft fit sind.' },
+    { label: 'Vollständiges Portfolio', text: 'Catena-X Readiness Analyse: Daten, Systeme, Verantwortlichkeiten, OEM-Anforderungen.\nETL- und Datenmapping-Prozesse: sauber, skalierbar, dokumentiert.\nDatenmodelle implementieren: fachlich korrekt, OEM-konform, technisch robust.\nTeam-Enablement: Schulungen und Wissensaufbau für souveräne interne Betreuung.' }
   ]},
   { label: 'Abschluss', variants: [
-    { label: '60-min Workshop-Termin', text: '[Name], lassen Sie uns in einem 60-minütigen Deep-Dive-Workshop Ihre aktuelle Datenstruktur gegen die Catena-X Anforderungen halten. Danach wissen Sie exakt, wo die Lücken sind – unabhängig davon, ob wir danach weiter zusammenarbeiten.\n\nHaben Sie nächste Woche Dienstag oder Mittwoch Vormittag Zeit?' },
-    { label: 'Readiness-Termin (weich)', text: 'Ein strukturierter Catena-X Data-Management Check wäre für Sie sinnvoll.\n\n→ Ihre aktuelle Situation analysieren\n→ OEM-Anforderungen strukturieren\n→ konkrete Handlungsfelder identifizieren\n\nAm Ende: eine klare Roadmap. Sie können jederzeit aussteigen.' },
-    { label: 'Readiness-Termin (stark)', text: 'Damit Sie die OEM-Anforderungen sauber erfüllen und keine unnötigen Kosten entstehen, schlage ich vor:\n\nEin Catena-X Readiness-Termin. Wir klären:\n→ welche Datenmodelle Sie wirklich brauchen\n→ wie groß der Aufwand bei Ihnen ist\n→ welche Risiken wir eliminieren können\n\nAm Ende: strukturierter Fahrplan. Jederzeit ausstiegsmöglich.\n\nSoll ich Ihnen zwei Terminvorschläge schicken?' }
+    { label: '60-min Workshop-Termin', text: '[Name], lassen Sie uns in einem 60-minütigen Workshop Ihre Datenstruktur gegen die Catena-X Anforderungen halten. Danach wissen Sie exakt, wo die Lücken sind – unabhängig davon, ob wir danach weiter zusammenarbeiten.\n\nHaben Sie nächste Woche Dienstag oder Mittwoch Vormittag Zeit?' },
+    { label: 'Readiness-Termin (weich)', text: 'Ein strukturierter Catena-X Data-Management Check wäre für Sie sinnvoll: aktuelle Situation analysieren, OEM-Anforderungen strukturieren, konkrete Handlungsfelder identifizieren. Am Ende: eine klare Roadmap. Sie können jederzeit aussteigen.' },
+    { label: 'Readiness-Termin (stark)', text: 'Ich schlage einen Catena-X Readiness-Termin vor. Wir klären: welche Datenmodelle Sie brauchen, wie groß der Aufwand ist, welche Risiken wir eliminieren können. Ergebnis: strukturierter Fahrplan, jederzeit ausstiegsmöglich.\n\nSoll ich Ihnen zwei Terminvorschläge schicken?' }
   ]}
 ];
 
