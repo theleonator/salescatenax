@@ -629,8 +629,8 @@ body {
 
 .emergency-modal {
   background: var(--surface);
-  border-radius: 16px;
-  padding: 28px 32px;
+  border-radius: 14px;
+  padding: 20px 24px;
   max-width: 580px;
   width: 90%;
   box-shadow: 0 20px 60px rgba(0,0,0,0.3);
@@ -639,10 +639,10 @@ body {
 }
 .emergency-modal-title {
   font-family: 'Nunito', sans-serif;
-  font-size: 18px;
+  font-size: 15px;
   font-weight: 800;
   color: var(--ink);
-  margin-bottom: 6px;
+  margin-bottom: 10px;
   display: flex;
   align-items: center;
   gap: 10px;
@@ -663,9 +663,9 @@ body {
 }
 .emergency-option {
   border: 1.5px solid var(--line);
-  border-radius: 12px;
-  padding: 18px 20px;
-  margin-bottom: 12px;
+  border-radius: 9px;
+  padding: 11px 14px;
+  margin-bottom: 8px;
   cursor: pointer;
   transition: all 0.15s;
   position: relative;
@@ -862,8 +862,8 @@ body {
 
 .pitch-modal {
   background: #1d1e40;
-  border-radius: 18px;
-  padding: 36px 40px;
+  border-radius: 14px;
+  padding: 22px 28px;
   max-width: 620px;
   width: 92%;
   box-shadow: 0 30px 80px rgba(0,0,0,0.5);
@@ -898,20 +898,19 @@ body {
 
 .pitch-title {
   font-family: 'Nunito', sans-serif;
-  font-size: 22px;
+  font-size: 17px;
   font-weight: 800;
   color: #fff;
-  margin-bottom: 24px;
+  margin-bottom: 12px;
   line-height: 1.25;
 }
 
 .pitch-text {
   font-family: 'Nunito', sans-serif;
-  font-size: 15px;
-  line-height: 1.75;
+  font-size: 13px;
+  line-height: 1.65;
   color: rgba(255,255,255,0.82);
-  margin-bottom: 28px;
-  white-space: pre-wrap;
+  margin-bottom: 14px;
 }
 
 .pitch-text strong {
@@ -922,15 +921,15 @@ body {
 .pitch-highlights {
   display: grid;
   grid-template-columns: 1fr 1fr;
-  gap: 10px;
-  margin-bottom: 28px;
+  gap: 7px;
+  margin-bottom: 16px;
 }
 
 .pitch-highlight {
   background: rgba(255,255,255,0.05);
   border: 1px solid rgba(255,255,255,0.1);
-  border-radius: 10px;
-  padding: 12px 14px;
+  border-radius: 8px;
+  padding: 9px 11px;
 }
 
 .pitch-highlight-icon {
@@ -1622,37 +1621,18 @@ function copyPitch() {
 <div class="emergency-overlay" id="emergencyOverlay" onclick="closeEmergencyOutside(event)">
   <div class="emergency-modal">
     <button class="emergency-close" onclick="closeEmergency()">✕</button>
-    <div class="emergency-modal-title">
-      Gesprächs-Notfall
-      <span class="badge">Sofort-Hilfe</span>
-    </div>
-    <div class="emergency-modal-sub">Kunde will abbrechen – wähle eine Reaktion und kopiere den Text direkt</div>
-
+    <div class="emergency-modal-title">🚨 Gesprächs-Notfall <span class="badge">Sofort-Hilfe</span></div>
     <div class="emergency-option" id="eo-0" onclick="copyEmergency(0, this)">
-      <div class="emergency-option-label">💛 Freundlich im Gedächtnis bleiben</div>
-      <div class="emergency-option-text">Das verstehe ich vollkommen – ich weiß, wie voll die Kalender gerade sind.
-
-Ich möchte mich kurz bedanken, dass Sie sich trotzdem die Zeit genommen haben. Catena-X wird in den nächsten Monaten bei vielen Zulieferern konkreter werden – ich würde mich freuen, wenn ich mich dann nochmal kurz melden darf.
-
-Darf ich in etwa 6–8 Wochen nochmal auf Sie zukommen? Ganz unverbindlich, einfach um zu sehen, ob sich etwas verändert hat.</div>
+      <div class="emergency-option-label">💛 Im Gedächtnis bleiben</div>
+      <div class="emergency-option-text">Das verstehe ich vollkommen. Darf ich in 6–8 Wochen nochmal kurz auf Sie zukommen – ganz unverbindlich, einfach um zu sehen, ob sich beim Thema Catena-X etwas verändert hat?</div>
     </div>
-
     <div class="emergency-option" id="eo-1" onclick="copyEmergency(1, this)">
-      <div class="emergency-option-label">📅 Termin für einen anderen Zeitpunkt gewinnen</div>
-      <div class="emergency-option-text">Kein Problem, ich halte mich kurz.
-
-Bevor wir auflegen – darf ich direkt einen Folgetermin vorschlagen? Nicht um heute etwas zu entscheiden, sondern einfach damit wir das Thema nicht ganz aus den Augen verlieren.
-
-Wie sieht es bei Ihnen in zwei bis drei Wochen aus – wäre ein kurzer 20-Minuten-Slot am Dienstag oder Mittwoch Vormittag machbar? Ich schicke Ihnen gleich eine Einladung zu und wir können jederzeit absagen, wenn sich die Prioritäten ändern.</div>
+      <div class="emergency-option-label">📅 Folgetermin gewinnen</div>
+      <div class="emergency-option-text">Kein Problem. Bevor wir auflegen – wäre ein kurzer 20-Minuten-Slot in zwei bis drei Wochen machbar, Dienstag oder Mittwoch Vormittag? Wir können jederzeit absagen.</div>
     </div>
-
     <div class="emergency-option" id="eo-2" onclick="copyEmergency(2, this)">
-      <div class="emergency-option-label">🙏 Höflich um Namenserinnerung bitten</div>
-      <div class="emergency-option-text">Ich respektiere das vollkommen und möchte Ihre Zeit nicht länger in Anspruch nehmen.
-
-Ich hätte nur eine kleine Bitte: Wenn das Thema Catena-X bei Ihnen irgendwann konkreter wird – sei es durch OEM-Anforderungen, ein internes Projekt oder einfach weil der Druck steigt – dann würde ich mich sehr freuen, wenn Sie kurz an mich denken. Mein Name ist Leon Seelbach, Consileon.
-
-Sie müssen nichts zusagen. Aber falls Sie dann jemanden brauchen, der die Komplexität schnell reduziert – ich bin gerne der erste Anruf.</div>
+      <div class="emergency-option-label">🙏 Namenserinnerung</div>
+      <div class="emergency-option-text">Ich respektiere das. Nur eine kleine Bitte: Wenn Catena-X bei Ihnen irgendwann konkreter wird – denken Sie kurz an mich. Leon Seelbach, Consileon. Ich bin gerne der erste Anruf.</div>
     </div>
   </div>
 </div>
@@ -1662,35 +1642,13 @@ Sie müssen nichts zusagen. Aber falls Sie dann jemanden brauchen, der die Kompl
   <div class="pitch-modal">
     <button class="pitch-close" onclick="closePitch()">✕</button>
     <div class="pitch-eyebrow">30-Sekunden Pitch · Consileon</div>
-    <div class="pitch-title">Strategy & Tech Consulting<br>für Catena-X Zulieferer</div>
-    <div class="pitch-text" id="pitchText">Wir sind Consileon – ein auf Catena-X spezialisiertes Strategy- und Tech-Consulting-Haus.
-
-Was uns unterscheidet: Wir denken Catena-X von beiden Seiten. Strategisch klären wir, welche Use Cases und OEM-Anforderungen wirklich relevant sind. Technisch setzen wir Data Management, ETL-Strecken und Datenmodelle sauber um – End-to-End.
-
-Der entscheidende Unterschied: Wir bauen kein externes Abhängigkeitsverhältnis auf. Unser Fokus liegt auf dem Wissensaufbau in Ihren internen Teams – damit Sie Catena-X nach unserem Engagement selbst steuern können.
-
-Das Ergebnis: OEM-konforme Datenprozesse, reduzierte Komplexität, und ein Team, das das Thema langfristig beherrscht.</div>
+    <div class="pitch-title">Strategy & Tech Consulting für Catena-X Zulieferer</div>
+    <div class="pitch-text" id="pitchText">Wir sind Consileon – ein auf Catena-X spezialisiertes Strategy- und Tech-Consulting-Haus. Wir denken Catena-X von beiden Seiten: Strategisch klären wir welche Use Cases und OEM-Anforderungen wirklich relevant sind. Technisch setzen wir Data Management, ETL-Strecken und Datenmodelle sauber um – End-to-End. Der entscheidende Unterschied: Wir bauen Wissen in Ihren internen Teams auf, damit Sie Catena-X nach unserem Engagement selbst steuern können. Das Ergebnis: OEM-konforme Prozesse, reduzierte Komplexität, ein befähigtes Team.</div>
     <div class="pitch-highlights">
-      <div class="pitch-highlight">
-        <div class="pitch-highlight-icon">🧠</div>
-        <div class="pitch-highlight-label">Wissensaufbau</div>
-        <div class="pitch-highlight-text">Internes Team wird befähigt – keine dauerhafte externe Abhängigkeit</div>
-      </div>
-      <div class="pitch-highlight">
-        <div class="pitch-highlight-icon">🗄️</div>
-        <div class="pitch-highlight-label">Data Management</div>
-        <div class="pitch-highlight-text">Saubere ETL-Strecken, Datenmodelle und OEM-konforme Prozesse</div>
-      </div>
-      <div class="pitch-highlight">
-        <div class="pitch-highlight-icon">🔗</div>
-        <div class="pitch-highlight-label">End-to-End Use Cases</div>
-        <div class="pitch-highlight-text">Von der OEM-Anforderung bis zum lieferfähigen Datenprodukt</div>
-      </div>
-      <div class="pitch-highlight">
-        <div class="pitch-highlight-icon">⚙️</div>
-        <div class="pitch-highlight-label">Tech + Strategy</div>
-        <div class="pitch-highlight-text">Wir verbinden fachliche Use-Case-Logik mit technischer Umsetzung</div>
-      </div>
+      <div class="pitch-highlight"><div class="pitch-highlight-label">🧠 Wissensaufbau</div><div class="pitch-highlight-text">Internes Team befähigt – keine Abhängigkeit</div></div>
+      <div class="pitch-highlight"><div class="pitch-highlight-label">🗄️ Data Management</div><div class="pitch-highlight-text">ETL, Datenmodelle, OEM-konform</div></div>
+      <div class="pitch-highlight"><div class="pitch-highlight-label">🔗 End-to-End</div><div class="pitch-highlight-text">OEM-Anforderung bis Datenprodukt</div></div>
+      <div class="pitch-highlight"><div class="pitch-highlight-label">⚙️ Tech + Strategy</div><div class="pitch-highlight-text">Use-Case-Logik trifft Umsetzung</div></div>
     </div>
     <button class="pitch-copy-btn" id="pitchCopyBtn" onclick="copyPitch()">📋 Pitch kopieren</button>
   </div>
