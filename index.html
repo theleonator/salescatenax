@@ -825,6 +825,152 @@ body {
 .tq-card:hover { border-color: var(--acc); background: var(--acc-light); }
 .tq-card.flash { background: var(--acc-light); border-color: var(--acc); }
 .tq-card.flash::before { content: '✓'; }
+
+/* PITCH BUTTON & MODAL */
+.pitch-btn {
+  flex-shrink: 0;
+  margin-left: 4px;
+  padding: 6px 16px;
+  border-radius: 7px;
+  border: 1.5px solid rgba(255,255,255,0.25);
+  background: rgba(255,255,255,0.08);
+  color: rgba(255,255,255,0.85);
+  font-family: 'Syne', sans-serif;
+  font-size: 12px;
+  font-weight: 700;
+  cursor: pointer;
+  letter-spacing: 0.5px;
+  transition: all 0.15s;
+}
+.pitch-btn:hover {
+  background: rgba(255,255,255,0.16);
+  border-color: rgba(255,255,255,0.4);
+  color: #fff;
+}
+
+.pitch-overlay {
+  display: none;
+  position: fixed;
+  inset: 0;
+  background: rgba(15,15,35,0.75);
+  z-index: 600;
+  align-items: center;
+  justify-content: center;
+  backdrop-filter: blur(4px);
+}
+.pitch-overlay.open { display: flex; }
+
+.pitch-modal {
+  background: #1d1e40;
+  border-radius: 18px;
+  padding: 36px 40px;
+  max-width: 620px;
+  width: 92%;
+  box-shadow: 0 30px 80px rgba(0,0,0,0.5);
+  border: 1px solid rgba(255,255,255,0.1);
+  position: relative;
+}
+
+.pitch-close {
+  position: absolute;
+  top: 16px; right: 16px;
+  width: 30px; height: 30px;
+  border-radius: 50%;
+  border: 1px solid rgba(255,255,255,0.15);
+  background: rgba(255,255,255,0.06);
+  color: rgba(255,255,255,0.5);
+  font-size: 14px;
+  cursor: pointer;
+  display: flex; align-items: center; justify-content: center;
+  transition: all 0.12s;
+}
+.pitch-close:hover { background: rgba(255,255,255,0.15); color: #fff; }
+
+.pitch-eyebrow {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 10px;
+  font-weight: 500;
+  text-transform: uppercase;
+  letter-spacing: 2px;
+  color: #cd102e;
+  margin-bottom: 10px;
+}
+
+.pitch-title {
+  font-family: 'Syne', sans-serif;
+  font-size: 22px;
+  font-weight: 800;
+  color: #fff;
+  margin-bottom: 24px;
+  line-height: 1.25;
+}
+
+.pitch-text {
+  font-family: 'DM Sans', sans-serif;
+  font-size: 15px;
+  line-height: 1.75;
+  color: rgba(255,255,255,0.82);
+  margin-bottom: 28px;
+  white-space: pre-wrap;
+}
+
+.pitch-text strong {
+  color: #fff;
+  font-weight: 600;
+}
+
+.pitch-highlights {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 10px;
+  margin-bottom: 28px;
+}
+
+.pitch-highlight {
+  background: rgba(255,255,255,0.05);
+  border: 1px solid rgba(255,255,255,0.1);
+  border-radius: 10px;
+  padding: 12px 14px;
+}
+
+.pitch-highlight-icon {
+  font-size: 16px;
+  margin-bottom: 6px;
+}
+
+.pitch-highlight-label {
+  font-family: 'Syne', sans-serif;
+  font-size: 11px;
+  font-weight: 700;
+  color: #cd102e;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  margin-bottom: 4px;
+}
+
+.pitch-highlight-text {
+  font-family: 'DM Sans', sans-serif;
+  font-size: 12px;
+  color: rgba(255,255,255,0.65);
+  line-height: 1.5;
+}
+
+.pitch-copy-btn {
+  width: 100%;
+  padding: 13px;
+  border-radius: 9px;
+  border: none;
+  background: #cd102e;
+  color: #fff;
+  font-family: 'Syne', sans-serif;
+  font-size: 13px;
+  font-weight: 700;
+  cursor: pointer;
+  transition: all 0.15s;
+  letter-spacing: 0.5px;
+}
+.pitch-copy-btn:hover { background: #a80d25; }
+.pitch-copy-btn.copied { background: #1d1e40; border: 1px solid rgba(255,255,255,0.2); }
 </style>
 </head>
 <body>
@@ -842,6 +988,7 @@ body {
       💬 Fragen
     </div>
   </div>
+  <button class="pitch-btn" onclick="openPitch()">🎯 Pitch</button>
   <textarea class="header-notes" id="callNotes" placeholder="Notizen…"></textarea>
   <button class="emergency-btn" onclick="openEmergency()">🚨 Notfall</button>
 </div>
@@ -1444,6 +1591,31 @@ function copyEmergency(idx, el) {
   el.classList.add('flash');
   setTimeout(() => el.classList.remove('flash'), 1000);
 }
+
+const PITCH_TEXT = `Wir sind Consileon – ein auf Catena-X spezialisiertes Strategy- und Tech-Consulting-Haus.
+
+Was uns unterscheidet: Wir denken Catena-X von beiden Seiten. Strategisch klären wir, welche Use Cases und OEM-Anforderungen wirklich relevant sind. Technisch setzen wir Data Management, ETL-Strecken und Datenmodelle sauber um – End-to-End.
+
+Der entscheidende Unterschied: Wir bauen kein externes Abhängigkeitsverhältnis auf. Unser Fokus liegt auf dem Wissensaufbau in Ihren internen Teams – damit Sie Catena-X nach unserem Engagement selbst steuern können.
+
+Das Ergebnis: OEM-konforme Datenprozesse, reduzierte Komplexität, und ein Team, das das Thema langfristig beherrscht.`;
+
+function openPitch() {
+  document.getElementById('pitchOverlay').classList.add('open');
+}
+function closePitch() {
+  document.getElementById('pitchOverlay').classList.remove('open');
+}
+function closePitchOutside(e) {
+  if (e.target === document.getElementById('pitchOverlay')) closePitch();
+}
+function copyPitch() {
+  copyText(PITCH_TEXT);
+  const btn = document.getElementById('pitchCopyBtn');
+  btn.textContent = '✓ Kopiert!';
+  btn.classList.add('copied');
+  setTimeout(() => { btn.textContent = '📋 Pitch kopieren'; btn.classList.remove('copied'); }, 1800);
+}
 </script>
 
 <!-- EMERGENCY MODAL -->
@@ -1482,6 +1654,45 @@ Ich hätte nur eine kleine Bitte: Wenn das Thema Catena-X bei Ihnen irgendwann k
 
 Sie müssen nichts zusagen. Aber falls Sie dann jemanden brauchen, der die Komplexität schnell reduziert – ich bin gerne der erste Anruf.</div>
     </div>
+  </div>
+</div>
+
+<!-- PITCH MODAL -->
+<div class="pitch-overlay" id="pitchOverlay" onclick="closePitchOutside(event)">
+  <div class="pitch-modal">
+    <button class="pitch-close" onclick="closePitch()">✕</button>
+    <div class="pitch-eyebrow">30-Sekunden Pitch · Consileon</div>
+    <div class="pitch-title">Strategy & Tech Consulting<br>für Catena-X Zulieferer</div>
+    <div class="pitch-text" id="pitchText">Wir sind Consileon – ein auf Catena-X spezialisiertes Strategy- und Tech-Consulting-Haus.
+
+Was uns unterscheidet: Wir denken Catena-X von beiden Seiten. Strategisch klären wir, welche Use Cases und OEM-Anforderungen wirklich relevant sind. Technisch setzen wir Data Management, ETL-Strecken und Datenmodelle sauber um – End-to-End.
+
+Der entscheidende Unterschied: Wir bauen kein externes Abhängigkeitsverhältnis auf. Unser Fokus liegt auf dem Wissensaufbau in Ihren internen Teams – damit Sie Catena-X nach unserem Engagement selbst steuern können.
+
+Das Ergebnis: OEM-konforme Datenprozesse, reduzierte Komplexität, und ein Team, das das Thema langfristig beherrscht.</div>
+    <div class="pitch-highlights">
+      <div class="pitch-highlight">
+        <div class="pitch-highlight-icon">🧠</div>
+        <div class="pitch-highlight-label">Wissensaufbau</div>
+        <div class="pitch-highlight-text">Internes Team wird befähigt – keine dauerhafte externe Abhängigkeit</div>
+      </div>
+      <div class="pitch-highlight">
+        <div class="pitch-highlight-icon">🗄️</div>
+        <div class="pitch-highlight-label">Data Management</div>
+        <div class="pitch-highlight-text">Saubere ETL-Strecken, Datenmodelle und OEM-konforme Prozesse</div>
+      </div>
+      <div class="pitch-highlight">
+        <div class="pitch-highlight-icon">🔗</div>
+        <div class="pitch-highlight-label">End-to-End Use Cases</div>
+        <div class="pitch-highlight-text">Von der OEM-Anforderung bis zum lieferfähigen Datenprodukt</div>
+      </div>
+      <div class="pitch-highlight">
+        <div class="pitch-highlight-icon">⚙️</div>
+        <div class="pitch-highlight-label">Tech + Strategy</div>
+        <div class="pitch-highlight-text">Wir verbinden fachliche Use-Case-Logik mit technischer Umsetzung</div>
+      </div>
+    </div>
+    <button class="pitch-copy-btn" id="pitchCopyBtn" onclick="copyPitch()">📋 Pitch kopieren</button>
   </div>
 </div>
 </body>
