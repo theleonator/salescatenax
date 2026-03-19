@@ -1015,6 +1015,71 @@ body {
 .pitch-q-link:hover { background: rgba(255,255,255,0.08); border-color: rgba(255,255,255,0.18); color: #fff; }
 .pitch-q-link.flash { background: rgba(205,16,46,0.2); border-color: rgba(205,16,46,0.4); }
 .pitch-q-link.flash::before { content: '✓'; }
+
+/* LEISTUNGEN */
+.leistung-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 12px;
+}
+.leistung-card {
+  background: var(--surface);
+  border: 1px solid var(--line);
+  border-radius: 12px;
+  padding: 16px 18px;
+  cursor: pointer;
+  transition: all 0.15s;
+  position: relative;
+}
+.leistung-card::before {
+  content: '';
+  position: absolute;
+  left: 0; top: 8px; bottom: 8px;
+  width: 3px; border-radius: 2px;
+  background: var(--line);
+  transition: background 0.15s;
+}
+.leistung-card:hover { box-shadow: var(--shadow-hover); border-color: #c8b8a8; transform: translateX(2px); }
+.leistung-card:hover::before { background: var(--acc); }
+.leistung-card.flash { border-color: var(--acc); background: var(--acc-light); }
+.leistung-card.flash::before { background: var(--acc); }
+.leistung-title {
+  font-family: 'Nunito', sans-serif;
+  font-size: 13px;
+  font-weight: 800;
+  color: var(--ink);
+  margin-bottom: 10px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+.leistung-title .l-icon { font-size: 15px; }
+.leistung-items { display: flex; flex-direction: column; gap: 4px; }
+.leistung-item {
+  font-size: 12px;
+  color: var(--ink2);
+  line-height: 1.5;
+  padding-left: 14px;
+  position: relative;
+}
+.leistung-item::before {
+  content: '·';
+  position: absolute;
+  left: 4px;
+  color: var(--acc);
+  font-weight: 700;
+}
+.leistung-copy-hint {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 9px;
+  color: var(--ink3);
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  margin-top: 10px;
+  opacity: 0;
+  transition: opacity 0.12s;
+}
+.leistung-card:hover .leistung-copy-hint { opacity: 1; }
 </style>
 </head>
 <body>
@@ -1030,6 +1095,9 @@ body {
     </div>
     <div class="main-tab" data-view="fragen" onclick="switchView('fragen')">
       💬 Fragen
+    </div>
+    <div class="main-tab" data-view="leistungen" onclick="switchView('leistungen')">
+      📦 Leistungen
     </div>
   </div>
   <button class="pitch-btn" onclick="openPitch()">🎯 Pitch</button>
@@ -1083,6 +1151,16 @@ body {
         <div class="fragen-cats" id="fragenCats"></div>
         <div class="fragen-content" id="fragenContent"></div>
       </div>
+    </div>
+
+    <!-- LEISTUNGEN VIEW -->
+    <div class="view" id="view-leistungen">
+      <div class="phase-stepper" id="phaseStepperL"></div>
+      <div class="section-head">
+        <div class="section-title">Unsere Leistungen</div>
+        <div class="section-sub">Klicken = Bereich kopieren</div>
+      </div>
+      <div id="leistungenContent"></div>
     </div>
 
   </div>
@@ -1447,7 +1525,7 @@ function buildStepperHTML() {
 }
 
 function renderAllSteppers() {
-  ['phaseStepper','phaseStepperE','phaseStepperF'].forEach(id => {
+  ['phaseStepper','phaseStepperE','phaseStepperF','phaseStepperL'].forEach(id => {
     const el = document.getElementById(id);
     if (el) el.innerHTML = buildStepperHTML();
   });
@@ -1665,6 +1743,71 @@ function copyPitch() {
   btn.classList.add('copied');
   setTimeout(() => { btn.textContent = '📋 Pitch kopieren'; btn.classList.remove('copied'); }, 1800);
 }
+
+const leistungen = [
+  { icon: '🧠', title: 'Know-how-Aufbau', items: [
+    'Management- und Fachbereichsworkshops zu Catena-X und Dataspaces',
+    'Einführung in Governance, BPN, EDC und relevante Standards',
+    'Strukturierung der notwendigen Onboarding-Schritte',
+    'Aufbau eines gemeinsamen Projekt- und Rollenverständnisses',
+    'Enablement von Fachbereich, IT und Management'
+  ]},
+  { icon: '⚙️', title: 'Technisches Enablement', items: [
+    'Unterstützung bei Registrierung und Onboarding im Datenraum',
+    'Auswahl und Aufbau der technischen Basiskomponenten (EDC, DTR etc.)',
+    'Integration der Datenraumkomponenten in die bestehende IT-Landschaft',
+    'Unterstützung bei Architektur- und Plattformentscheidungen',
+    'Aufbau von technischem Know-how im IT-Team'
+  ]},
+  { icon: '🔗', title: 'Use-Case Auswahl', items: [
+    'Identifikation relevanter Catena-X Use Cases (z. B. PCF, Traceability, CCM)',
+    'Analyse vorhandener Daten und Systemlandschaften',
+    'Bewertung von Business Value und Umsetzbarkeit',
+    'Definition eines MVP-Ansatzes für schnelle Ergebnisse',
+    'Projektplanung und Roadmap für weitere Skalierung'
+  ]},
+  { icon: '🗄️', title: 'Data Management', items: [
+    'Analyse vorhandener Datenstrukturen in ERP, PLM, MES etc.',
+    'Datenmapping auf Catena-X Semantic Models',
+    'Aufbau von ETL-Prozessen zur Datenaufbereitung',
+    'Harmonisierung heterogener Datenformate',
+    'Automatisierung von Datenbereitstellung und Datenflüssen'
+  ]},
+  { icon: '🔌', title: 'App- & Prozessintegration', items: [
+    'Technologie-unabhängige Auswahl geeigneter Catena-X Anwendungen',
+    'Integration in ERP-, PLM- oder Integrationsplattformen',
+    'Definition und Umsetzung der Datenaustauschprozesse',
+    'Vermeidung von Vendor Lock-In durch offene Architekturen',
+    'Aufbau interoperabler Schnittstellen und Datenpipelines'
+  ]},
+  { icon: '🚀', title: 'Produktiver Datenaustausch', items: [
+    'Szenario- und Integrationstests mit Geschäftspartnern',
+    'Aufbau stabiler Betriebs- und Wartungsprozesse',
+    'Unterstützung beim Rollout weiterer Use Cases',
+    'Skalierung des Datenaustauschs in der Lieferkette',
+    'Begleitung beim organisatorischen Change-Management'
+  ]}
+];
+
+function renderLeistungen() {
+  const el = document.getElementById('leistungenContent');
+  if (!el) return;
+  el.innerHTML = '<div class="leistung-grid">' + leistungen.map((l, i) => `
+    <div class="leistung-card" onclick="copyLeistung(${i}, this)">
+      <div class="leistung-title"><span class="l-icon">${l.icon}</span>${l.title}</div>
+      <div class="leistung-items">${l.items.map(it => `<div class="leistung-item">${esc(it)}</div>`).join('')}</div>
+      <div class="leistung-copy-hint">Klicken zum Kopieren →</div>
+    </div>`).join('') + '</div>';
+}
+
+function copyLeistung(idx, el) {
+  const l = leistungen[idx];
+  const txt = l.title + ':\n' + l.items.map(i => '· ' + i).join('\n');
+  copyText(txt);
+  el.classList.add('flash');
+  setTimeout(() => el.classList.remove('flash'), 1000);
+}
+renderLeistungen();
 </script>
 
 <!-- EMERGENCY MODAL -->
