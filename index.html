@@ -970,6 +970,51 @@ body {
 }
 .pitch-copy-btn:hover { background: #a80d25; }
 .pitch-copy-btn.copied { background: #1d1e40; border: 1px solid rgba(255,255,255,0.2); }
+
+.pitch-questions {
+  border-top: 1px solid rgba(255,255,255,0.1);
+  margin-top: 14px;
+  padding-top: 12px;
+}
+.pitch-questions-title {
+  font-family: 'Nunito', sans-serif;
+  font-size: 10px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 1.5px;
+  color: rgba(255,255,255,0.35);
+  margin-bottom: 8px;
+}
+.pitch-q-link {
+  display: flex;
+  align-items: flex-start;
+  gap: 9px;
+  padding: 8px 11px;
+  border-radius: 7px;
+  border: 1px solid rgba(255,255,255,0.08);
+  background: rgba(255,255,255,0.04);
+  cursor: pointer;
+  margin-bottom: 5px;
+  transition: all 0.12s;
+  font-size: 12px;
+  color: rgba(255,255,255,0.72);
+  line-height: 1.45;
+}
+.pitch-q-link:last-child { margin-bottom: 0; }
+.pitch-q-link::before {
+  content: '?';
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 9px;
+  color: #cd102e;
+  background: rgba(205,16,46,0.2);
+  border-radius: 4px;
+  padding: 2px 5px;
+  flex-shrink: 0;
+  margin-top: 1px;
+}
+.pitch-q-link:hover { background: rgba(255,255,255,0.08); border-color: rgba(255,255,255,0.18); color: #fff; }
+.pitch-q-link.flash { background: rgba(205,16,46,0.2); border-color: rgba(205,16,46,0.4); }
+.pitch-q-link.flash::before { content: '✓'; }
 </style>
 </head>
 <body>
@@ -1599,6 +1644,11 @@ Der entscheidende Unterschied: Wir bauen kein externes Abhängigkeitsverhältnis
 
 Das Ergebnis: OEM-konforme Datenprozesse, reduzierte Komplexität, und ein Team, das das Thema langfristig beherrscht.`;
 
+function copyPitchQ(el, txt) {
+  copyText(txt);
+  el.classList.add('flash');
+  setTimeout(() => el.classList.remove('flash'), 1200);
+}
 function openPitch() {
   document.getElementById('pitchOverlay').classList.add('open');
 }
@@ -1649,6 +1699,13 @@ function copyPitch() {
       <div class="pitch-highlight"><div class="pitch-highlight-label">🗄️ Data Management</div><div class="pitch-highlight-text">ETL, Datenmodelle, OEM-konform</div></div>
       <div class="pitch-highlight"><div class="pitch-highlight-label">🔗 End-to-End</div><div class="pitch-highlight-text">OEM-Anforderung bis Datenprodukt</div></div>
       <div class="pitch-highlight"><div class="pitch-highlight-label">⚙️ Tech + Strategy</div><div class="pitch-highlight-text">Use-Case-Logik trifft Umsetzung</div></div>
+    </div>
+    <div class="pitch-questions">
+      <div class="pitch-questions-title">↪ Anschlussfragen — Einstieg &amp; Situation</div>
+      <div class="pitch-q-link" onclick="copyPitchQ(this, 'Wie stark beschäftigt Sie das Thema Catena-X aktuell schon im Alltag?')">Wie stark beschäftigt Sie das Thema Catena-X aktuell schon im Alltag?</div>
+      <div class="pitch-q-link" onclick="copyPitchQ(this, 'In welchem Zusammenhang sind Sie erstmals mit Catena-X in Berührung gekommen?')">In welchem Zusammenhang sind Sie erstmals mit Catena-X in Berührung gekommen?</div>
+      <div class="pitch-q-link" onclick="copyPitchQ(this, 'Wie viel Zeit investiert Ihr Team aktuell pro Woche manuell, um Datenanfragen von OEMs zu beantworten?')">Wie viel Zeit investiert Ihr Team aktuell pro Woche manuell, um Datenanfragen von OEMs zu beantworten?</div>
+      <div class="pitch-q-link" onclick="copyPitchQ(this, 'Gibt es in Ihrem Haus bereits eine zentrale Strategie für das Data Management – oder lösen die Abteilungen das Thema Catena-X momentan eher isoliert?')">Gibt es in Ihrem Haus bereits eine zentrale Strategie für das Data Management – oder lösen die Abteilungen das Thema momentan eher isoliert?</div>
     </div>
     <button class="pitch-copy-btn" id="pitchCopyBtn" onclick="copyPitch()">📋 Pitch kopieren</button>
   </div>
